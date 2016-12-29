@@ -5,6 +5,7 @@
 [Oo]bj/
 [Bb]uild
 /[Ll]ibrary/
+Assets/Photon/
 sysinfo.txt
 *.stackdump
  
