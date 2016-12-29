@@ -5,7 +5,9 @@
 [Oo]bj/
 [Bb]uild
 /[Ll]ibrary/
-Assets/Photon/
+Assets/Photon Unity Networking/
+Assets/PhotonChatApi/
+Assets/Plugins/
 sysinfo.txt
 *.stackdump
  
