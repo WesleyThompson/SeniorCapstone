@@ -8,6 +8,9 @@
 Assets/Photon Unity Networking/
 Assets/PhotonChatApi/
 Assets/Plugins/
+Assets/Photon Unity Networking.meta
+Assets/PhotonChatApi.meta
+Assets/Plugins.meta
 sysinfo.txt
 *.stackdump
  
