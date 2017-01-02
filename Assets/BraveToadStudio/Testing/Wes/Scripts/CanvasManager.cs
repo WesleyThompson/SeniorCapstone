@@ -12,7 +12,7 @@ public class CanvasManager : MonoBehaviour {
     }
 
 	void Update () {
-        if (Input.GetKeyUp(KeyCode.Escape) && pauseMenu != null) {
+        if ( ( Input.GetKeyUp(KeyCode.Escape) || Input.GetButtonUp("Controller Menu") )  && pauseMenu != null) {
             TogglePauseMenu();
         }
 	}
