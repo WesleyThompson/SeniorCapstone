@@ -55,8 +55,8 @@ public class PlayerController : Photon.PunBehaviour {
 
     void OnCollisionEnter(Collision other) {
         //If this isn't our player then don't do anything
-        if (!parentPhotonView.isMine)
-            return;
+        //if (!parentPhotonView.isMine)
+            //return;
 
         if (other.gameObject.tag.Equals("Pickup")) {
             Debug.Log("Bounds: " + other.collider.bounds.size.ToString());

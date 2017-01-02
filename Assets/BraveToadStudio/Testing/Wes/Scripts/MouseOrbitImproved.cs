@@ -7,8 +7,10 @@ public class MouseOrbitImproved : MonoBehaviour
 
     public Transform target;
     public float distance = 5.0f;
-    public float xSpeed = 120.0f;
-    public float ySpeed = 120.0f;
+    public float xSpeed = 30.0f;
+    public float ySpeed = 30.0f;
+    public float xControllerSpeed = 120.0f;
+    public float yControllerSpeed = 120.0f;
 
     public float yMinLimit = -20f;
     public float yMaxLimit = 80f;
@@ -16,7 +18,7 @@ public class MouseOrbitImproved : MonoBehaviour
     public float distanceMin = .5f;
     public float distanceMax = 15f;
 
-    private Rigidbody rigidbody;
+    private Rigidbody rb;
 
     float x = 0.0f;
     float y = 0.0f;
@@ -29,12 +31,12 @@ public class MouseOrbitImproved : MonoBehaviour
         x = angles.y;
         y = angles.x;
 
-        rigidbody = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
 
         // Make the rigid body not change rotation
-        if (rigidbody != null)
+        if (rb != null)
         {
-            rigidbody.freezeRotation = true;
+            rb.freezeRotation = true;
         }
     }
 
@@ -44,8 +46,8 @@ public class MouseOrbitImproved : MonoBehaviour
         {
             x += Input.GetAxis("Mouse X") * xSpeed * distance * 0.02f;
             y -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f;
-            x += Input.GetAxis("Joystick X") * xSpeed * distance * 0.02f;
-            y -= Input.GetAxis("Joystick Y") * ySpeed * 0.02f;
+            x += Input.GetAxis("Joystick X") * xControllerSpeed * distance * 0.02f;
+            y -= Input.GetAxis("Joystick Y") * yControllerSpeed * 0.02f;
 
             y = ClampAngle(y, yMinLimit, yMaxLimit);
 
