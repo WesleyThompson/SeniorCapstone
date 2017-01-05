@@ -6,7 +6,14 @@ public class FollowPlayerRotate : MonoBehaviour {
 
     void Start()
     {
-        player = GameObject.FindWithTag("Player");
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject p in players)
+        {
+            if (p.transform.parent.gameObject.GetPhotonView().ownerId == gameObject.GetPhotonView().ownerId)
+            {
+                player = p;
+            }
+        }
     }
 
     void FixedUpdate() {

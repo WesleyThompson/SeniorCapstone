@@ -60,7 +60,6 @@ public class MouseOrbitImproved : MonoBehaviour
             if (Physics.Linecast(transform.position, target.position, out hit))
             {
                 Debug.DrawRay(transform.position, target.position, Color.red);
-                Debug.Log(hit.distance.ToString());
                 //distance -= hit.distance;
             }
             Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
