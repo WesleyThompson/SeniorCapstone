@@ -11,6 +11,7 @@ public class PlayerController : Photon.PunBehaviour {
     //We have an object higher than the player to control objects
     private PhotonView parentPhotonView;
     private PhotonTransformView transformView;
+    public GameObject objLayer;
 
     public float speed;
 	[Range(0,1)]
@@ -20,7 +21,7 @@ public class PlayerController : Photon.PunBehaviour {
 	void Start () {
         rb = GetComponent<Rigidbody>();
         parentPhotonView = GetComponentInParent<PhotonView>();
-        transformView = GetComponent<PhotonTransformView>();
+        transformView = GetComponent<PhotonTransformView>(); 
     }
 
 	void FixedUpdate () {
@@ -54,16 +55,49 @@ public class PlayerController : Photon.PunBehaviour {
     }
 
     void OnCollisionEnter(Collision other) {
+        /*
+        Debug.Log("Yo");
         //If this isn't our player then don't do anything
-        //if (!parentPhotonView.isMine)
-            //return;
+        if (objLayer == null) {
+            GameObject[] objs = GameObject.FindGameObjectsWithTag("ObjectLayer");
+            foreach (GameObject obj in objs)
+            {
+                if (obj.transform.parent.gameObject.GetPhotonView().isMine)
+                {
+                    objLayer = obj;
+                }
+            }
+        }
 
         if (other.gameObject.tag.Equals("Pickup")) {
-            Debug.Log("Bounds: " + other.collider.bounds.size.ToString());
             Vector3 size = other.collider.bounds.size;
             // Adjust size to match rotation
-            Debug.Log("Size: " + size.ToString());
             transform.localScale += size;
+
+            other.collider.enabled = false;
+            //other.transform.position = objLayer.transform.position;
+            other.transform.parent = objLayer.transform;
+        }
+        */
+
+        //This grabs the object layer that belongs to our player
+        if (objLayer == null)
+        {
+            GameObject[] objs = GameObject.FindGameObjectsWithTag("ObjectLayer");
+            foreach (GameObject obj in objs)
+            {
+                if (obj.transform.parent.gameObject.GetPhotonView().ownerId == gameObject.GetPhotonView().ownerId)
+                {
+                    objLayer = obj;
+                }
+            }
+        }
+
+        if (other.gameObject.tag.Equals("Pickup")) {
+            Debug.Log("Waddup! From: " + gameObject.GetPhotonView().ownerId + " and " + other.gameObject.name + ", and " + objLayer.GetPhotonView().ownerId);
+            other.collider.enabled = false;
+            other.transform.parent = objLayer.transform;
+            other.transform.position = objLayer.transform.position;
         }
     }
 }
