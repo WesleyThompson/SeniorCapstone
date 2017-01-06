@@ -18,10 +18,16 @@ public class PlayerController : Photon.PunBehaviour {
 	public float slowRate;
     public float stopThreshold;
 
+    //Shape stuff
+    private Vector3 sizeTarget;
+    public float sizeLerpSpeed;
+
 	void Start () {
         rb = GetComponent<Rigidbody>();
         parentPhotonView = GetComponentInParent<PhotonView>();
-        transformView = GetComponent<PhotonTransformView>(); 
+        transformView = GetComponent<PhotonTransformView>();
+
+        sizeTarget = transform.localScale;
     }
 
 	void FixedUpdate () {
@@ -51,35 +57,17 @@ public class PlayerController : Photon.PunBehaviour {
                 rb.velocity *= slowRate;
                 rb.angularVelocity *= slowRate;
             }
+
+            Debug.Log(sizeTarget.ToString());
+            //Size stuff
+            if (!transform.localScale.Equals(sizeTarget)) {
+                float delta = Time.deltaTime * sizeLerpSpeed;
+                transform.localScale = Vector3.Lerp(transform.localScale, sizeTarget, delta);
+            }
         }
     }
 
     void OnCollisionEnter(Collision other) {
-        /*
-        Debug.Log("Yo");
-        //If this isn't our player then don't do anything
-        if (objLayer == null) {
-            GameObject[] objs = GameObject.FindGameObjectsWithTag("ObjectLayer");
-            foreach (GameObject obj in objs)
-            {
-                if (obj.transform.parent.gameObject.GetPhotonView().isMine)
-                {
-                    objLayer = obj;
-                }
-            }
-        }
-
-        if (other.gameObject.tag.Equals("Pickup")) {
-            Vector3 size = other.collider.bounds.size;
-            // Adjust size to match rotation
-            transform.localScale += size;
-
-            other.collider.enabled = false;
-            //other.transform.position = objLayer.transform.position;
-            other.transform.parent = objLayer.transform;
-        }
-        */
-
         //This grabs the object layer that belongs to our player
         if (objLayer == null)
         {
@@ -94,10 +82,27 @@ public class PlayerController : Photon.PunBehaviour {
         }
 
         if (other.gameObject.tag.Equals("Pickup")) {
-            Debug.Log("Waddup! From: " + gameObject.GetPhotonView().ownerId + " and " + other.gameObject.name + ", and " + objLayer.GetPhotonView().ownerId);
+            //Grab the size of the pickups collider
+            Vector3 size = other.collider.bounds.size;
+            Debug.Log(size.ToString());
+
+            //Disable the collider and parent the object to the player
             other.collider.enabled = false;
             other.transform.parent = objLayer.transform;
-            other.transform.position = objLayer.transform.position;
+
+            //Add the target size of our player
+            sizeTarget += ConvertVectorToDisplacement(size);
         }
+    }
+
+    private Vector3 ConvertVectorToDisplacement(Vector3 size) {
+        float total = size.x + size.y + size.z;
+        total = total / 3;
+
+        Vector3 averageDimension = new Vector3(total, total, total);
+
+        //Calculate spherical change
+
+        return averageDimension;
     }
 }
