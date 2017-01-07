@@ -28,6 +28,7 @@ public class PlayerController : Photon.PunBehaviour {
         transformView = GetComponent<PhotonTransformView>();
 
         sizeTarget = transform.localScale;
+        Debug.Log("Size " + sizeTarget);
     }
 
 	void FixedUpdate () {
@@ -58,7 +59,6 @@ public class PlayerController : Photon.PunBehaviour {
                 rb.angularVelocity *= slowRate;
             }
 
-            Debug.Log(sizeTarget.ToString());
             //Size stuff
             if (!transform.localScale.Equals(sizeTarget)) {
                 float delta = Time.deltaTime * sizeLerpSpeed;
@@ -81,17 +81,16 @@ public class PlayerController : Photon.PunBehaviour {
             }
         }
 
-        if (other.gameObject.tag.Equals("Pickup")) {
+        if (other.gameObject.tag.Equals("Pickup") && other.collider.bounds.size.magnitude <= GetComponent<Collider>().bounds.size.magnitude) {
             //Grab the size of the pickups collider
             Vector3 size = other.collider.bounds.size;
-            Debug.Log(size.ToString());
 
             //Disable the collider and parent the object to the player
             other.collider.enabled = false;
             other.transform.parent = objLayer.transform;
 
             //Add the target size of our player
-            sizeTarget += ConvertVectorToDisplacement(size);
+            sizeTarget = ConvertVectorToDisplacement(size);
         }
     }
 
@@ -99,10 +98,18 @@ public class PlayerController : Photon.PunBehaviour {
         float total = size.x + size.y + size.z;
         total = total / 3;
 
-        Vector3 averageDimension = new Vector3(total, total, total);
+        float currentVolume = (4f / 3f) * Mathf.PI * Mathf.Pow(transform.localScale.x / 2, 3f);
+        currentVolume += total;
+        Debug.Log("CurrVol: " + currentVolume);
+
+        float radius = Mathf.Pow( (3f/4f) * (currentVolume / Mathf.PI), 1f/3f);
+        Debug.Log("New Radius " + radius);
+        float diameter = radius * 2.25f;
+
+        Vector3 newBounds = new Vector3(diameter, diameter, diameter);
 
         //Calculate spherical change
 
-        return averageDimension;
+        return newBounds;
     }
 }
