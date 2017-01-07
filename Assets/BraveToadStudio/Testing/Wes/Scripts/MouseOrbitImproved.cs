@@ -44,24 +44,17 @@ public class MouseOrbitImproved : MonoBehaviour
     {
         if (target)
         {
-            x += Input.GetAxis("Mouse X") * xSpeed * distance * 0.02f;
+            x += Input.GetAxis("Mouse X") * xSpeed * 0.02f;
             y -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f;
-            x += Input.GetAxis("Joystick X") * xControllerSpeed * distance * 0.02f;
+            x += Input.GetAxis("Joystick X") * xControllerSpeed * 0.02f;
             y -= Input.GetAxis("Joystick Y") * yControllerSpeed * 0.02f;
 
             y = ClampAngle(y, yMinLimit, yMaxLimit);
 
             Quaternion rotation = Quaternion.Euler(y, x, 0);
 
-            distance = Mathf.Clamp(distance - Input.GetAxis("Mouse ScrollWheel") * 5, distanceMin, distanceMax);
+            distance = target.localScale.magnitude;
 
-            RaycastHit hit;
-            //TODO fix detection/adjustment
-            if (Physics.Linecast(transform.position, target.position, out hit))
-            {
-                Debug.DrawRay(transform.position, target.position, Color.red);
-                //distance -= hit.distance;
-            }
             Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
             Vector3 position = rotation * negDistance + target.position;
 
