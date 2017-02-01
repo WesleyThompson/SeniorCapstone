@@ -1,25 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI ;
-
-public class MainMenuGlobal : MonoBehaviour
-{
-	
-	public List<List<Button>> hiddenMenus = new List<List<Button>>() ; //stack that holds list of all hidden menus that are traversable with the BACK button
-	public List<Button> hiddenMenuItems = new List<Button>() ; //temp holder to hold items wished to be hidden / unhidden
-	public List<Button> currentMenuItems = new List<Button>() ; //always holed latest set of menu items
-	
-	public Button playButton ;
-	public Button settingsButton ;
-	public Button creditsButton ;
-	public Button exitButton ;
-	public Button backButton ;
-	
-	public List<GameObject> testlist = new List<GameObject>() ;
-/*
+﻿/*
 TODO 
-Make Settings menu a prefab so that it can be used elsewhere
+Make Settings menu a prefab so that it can be used elsewhere ()
 Add settings:
 	audio mute, audio level
 	keymapping?
@@ -37,6 +18,26 @@ The BACK button will: find the List of Lists<Button> that is at the top of the s
 
 */	
 
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI ;
+
+public class MainMenuGlobal : MonoBehaviour
+{
+	
+	public List<List<Button>> hiddenMenus = new List<List<Button>>() ; //stack that holds list of all hidden menus that are traversable with the BACK button
+	public List<Button> hiddenMenuItems = new List<Button>() ; //temp holder to hold items wished to be hidden / unhidden
+	public List<Button> currentMenuItems = new List<Button>() ; //always holed latest set of menu items
+	
+	public Button playButton ;
+	public Button settingsButton ;
+	public Button creditsButton ;
+	public Button exitButton ;
+	public Button backButton ;
+
+	public Text creditText ;
+	
 	void Start ()
 	{//when init scene, add onclick events for all main menu buttons: play, settings, credits, exit
 		playButton.GetComponent<Button>().onClick.AddListener(openPlay) ;
@@ -45,6 +46,8 @@ The BACK button will: find the List of Lists<Button> that is at the top of the s
 		exitButton.GetComponent<Button>().onClick.AddListener(closeGame) ;
 		backButton.GetComponent<Button>().onClick.AddListener(goBack) ;
 			backButton.gameObject.SetActive(false) ; //used for hiding/deactivating button, set to false by default
+			
+		creditText.gameObject.SetActive(false) ;
 
 		this.currentMenuItems = this.getAllMenuItems() ;
 	}
@@ -93,10 +96,16 @@ The BACK button will: find the List of Lists<Button> that is at the top of the s
 	public void openSettings()
 	{//make the settings menu a prefab for later in-game implementation
 		this.hideMenuElements() ;
-		//TODO - ADD settings - audio levels/mute (slider)
-			//Controller sensitivity?
-			//Keymapping?
-			//
+		//make the settings menu a prefab
+		
+		//TODO
+			//ADD settings
+				//audio levels/mute (slider)
+				//Controller sensitivity?
+				//Keymapping?
+				//invert mouse direction
+				//brightness
+				//
 			
 		backButton.gameObject.SetActive(true) ;
 	}
@@ -104,14 +113,18 @@ The BACK button will: find the List of Lists<Button> that is at the top of the s
 	public void openCredits()
 	{
 		this.hideMenuElements() ;
-		//TODO - display simple credits page as text
-		
+		creditText.gameObject.SetActive(true) ;
 		backButton.gameObject.SetActive(true) ;
 	}
 	
 	public void goBack()
 	{
 		//TODO if any non-buttons from the settings menu are displayed, hide them
+		
+		if(creditText.gameObject.activeSelf)
+			creditText.gameObject.SetActive(false) ;
+
+		
 		showHiddenMenuElements() ;
 		if(hiddenMenus.Count < 2)
 			backButton.gameObject.SetActive(false) ; //hide back button if back at main menu

@@ -1,0 +1,11 @@
+﻿Completed functionality for menu-switching, needs actual menu items to switch into
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch mainMenuFunctionality
+# Your branch is up-to-date with 'origin/mainMenuFunctionality'.
+#
+# Changes to be committed:
+#	modified:   Assets/BraveToadStudio/Game/Main Menu.unity
+#	modified:   Assets/MainMenuGlobal.cs
+#
+
