@@ -1,13 +1,4 @@
 ﻿/*
-TODO 
-Make Settings menu a prefab so that it can be used elsewhere ()
-Add settings:
-	audio mute, audio level
-	keymapping?
-	input type?
-Add credits page (static)
-Make hide/show on menu lists, not individual buttons
-
 Change Lists to type GameObject and cast Buttons like
 playButton.GetComponent<GameObject>()
 
@@ -15,7 +6,6 @@ This script works by adding all menu items (buttons) into a List of Lists<Button
 When you click on a button that has another menu associated with it, then all current menu items will be hidden, added to the hiddenMenus List (as a stack), the buttons associated with the clicked button will be unhidden, and the currentMenu List will be overwritten with the new List of buttons, and the BACK button will be unhidden.
 
 The BACK button will: find the List of Lists<Button> that is at the top of the stack, hide all buttons in the currentMenu List, unhide all menu items in the List that was found at the top of the stack, and then remove that List from the stack. If hiddenMenus List is ever empty, the back button will be hidden.
-
 */	
 
 using System.Collections;
@@ -37,6 +27,7 @@ public class MainMenuGlobal : MonoBehaviour
 	public Button backButton ;
 
 	public Text creditText ;
+	public GameObject settingsPanel ;
 	
 	void Start ()
 	{//when init scene, add onclick events for all main menu buttons: play, settings, credits, exit
@@ -48,6 +39,7 @@ public class MainMenuGlobal : MonoBehaviour
 			backButton.gameObject.SetActive(false) ; //used for hiding/deactivating button, set to false by default
 			
 		creditText.gameObject.SetActive(false) ;
+		settingsPanel.gameObject.SetActive(false) ;
 
 		this.currentMenuItems = this.getAllMenuItems() ;
 	}
@@ -90,23 +82,13 @@ public class MainMenuGlobal : MonoBehaviour
 	}
 	
 	public void openPlay()
-	{//TODO - onClick place player into waiting room?
+	{//TODO - onClick place player into waiting room
 	}
 	
 	public void openSettings()
-	{//make the settings menu a prefab for later in-game implementation
+	{
 		this.hideMenuElements() ;
-		//make the settings menu a prefab
-		
-		//TODO
-			//ADD settings
-				//audio levels/mute (slider)
-				//Controller sensitivity?
-				//Keymapping?
-				//invert mouse direction
-				//brightness
-				//
-			
+		settingsPanel.gameObject.SetActive(true) ;
 		backButton.gameObject.SetActive(true) ;
 	}
 	
@@ -123,6 +105,8 @@ public class MainMenuGlobal : MonoBehaviour
 		
 		if(creditText.gameObject.activeSelf)
 			creditText.gameObject.SetActive(false) ;
+		if(settingsPanel.gameObject.activeSelf)
+			settingsPanel.gameObject.SetActive(false) ;
 
 		
 		showHiddenMenuElements() ;
