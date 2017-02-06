@@ -6,12 +6,13 @@ This script works by adding all menu items (buttons) into a List of Lists<Button
 When you click on a button that has another menu associated with it, then all current menu items will be hidden, added to the hiddenMenus List (as a stack), the buttons associated with the clicked button will be unhidden, and the currentMenu List will be overwritten with the new List of buttons, and the BACK button will be unhidden.
 
 The BACK button will: find the List of Lists<Button> that is at the top of the stack, hide all buttons in the currentMenu List, unhide all menu items in the List that was found at the top of the stack, and then remove that List from the stack. If hiddenMenus List is ever empty, the back button will be hidden.
-*/	
+*/
 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI ;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenuGlobal : MonoBehaviour
 {
@@ -45,7 +46,11 @@ public class MainMenuGlobal : MonoBehaviour
 	}
 	
 	void Update () {}
-	
+
+    public void PlayGame() {
+        SceneManager.LoadScene("LobbyIslandForreal");
+    }
+
 	public List<Button> getAllMenuItems()
 	{//returns list of all currently unhidden menu items
 		if(this.currentMenuItems.Count == 0)
