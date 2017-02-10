@@ -18,7 +18,6 @@ using UnityEngine.UI ;
 public class OverheadDisplayManager : MonoBehaviour
 {
 	public Camera main ;
-	public Canvas ohui ;
 	public GameObject rockAsPlayer ;
 	Vector3 playerPosOnScreen ;
 
@@ -30,8 +29,7 @@ public class OverheadDisplayManager : MonoBehaviour
 	
 	void Update()
 	{
-		playerPosOnScreen = Camera.main.WorldToScreenPoint(transform.position) ;
-		//set ohui to follow main?
+		playerPosOnScreen = Camera.main.WorldToScreenPoint(rockAsPlayer.transform.position) ;
 	}
 	void OnGUI()
 	{
