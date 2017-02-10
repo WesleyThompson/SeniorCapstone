@@ -17,20 +17,24 @@ using UnityEngine.UI ;
 
 public class OverheadDisplayManager : MonoBehaviour
 {
+	public Camera main ;
+	public Canvas ohui ;
+	public GameObject rockAsPlayer ;
+	Vector3 playerPosOnScreen ;
 
 	public List<GameObject> playerList = new List<GameObject>() ;
 
 	void Start ()
 	{
-		//TODO fetch photon player list and init list with names (these dont change)
 	}
 	
-	void onGUI()
+	void Update()
 	{
+		playerPosOnScreen = Camera.main.WorldToScreenPoint(transform.position) ;
+		//set ohui to follow main?
 	}
-	
-	void Update ()
+	void OnGUI()
 	{
-		
+		GUI.Label(new Rect(playerPosOnScreen.x, playerPosOnScreen.y, 100, 50), "testinggg" ) ;
 	}
 }
