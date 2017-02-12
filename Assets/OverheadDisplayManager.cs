@@ -18,26 +18,22 @@ using UnityEngine.UI ;
 public class OverheadDisplayManager : MonoBehaviour
 {
 	public Camera main ;
-	public Canvas ohui ;
 	public GameObject rockAsPlayer ;
 	Vector3 playerPosOnScreen ;
-	Quaternion rotation ;
 	
-	public List<GameObject> playerList = new List<GameObject>() ;
+	//public List<GameObject> playerList = new List<GameObject>() ;
 	
 	void Start ()
 	{
-		rotation = ohui.transform.rotation ;
 	}
 	
 	void Update()
 	{
 		playerPosOnScreen = Camera.main.WorldToScreenPoint(rockAsPlayer.transform.position) ;
-		ohui.transform.rotation = rotation ; //keeps canvas from rotating with camera (doesnt work)
 	}
 	
 	void OnGUI()
-	{
-		GUI.Label(new Rect(playerPosOnScreen.x, playerPosOnScreen.y, 100, 50), "testinggg" ) ;
+	{		
+		GUI.Label(new Rect(playerPosOnScreen.x, Screen.height - playerPosOnScreen.y-100, 100, 50), rockAsPlayer.name ) ;
 	}
 }
