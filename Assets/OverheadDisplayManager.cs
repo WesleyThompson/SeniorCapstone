@@ -27,6 +27,7 @@ public class OverheadDisplayManager : MonoBehaviour
 		{//collect all players in game at start
 			playerList.Add(player) ;
 		}
+		playerList.Add(rockAsPlayer) ;
 	}
 	
 	void Update()
@@ -38,10 +39,10 @@ public class OverheadDisplayManager : MonoBehaviour
 		foreach(GameObject player in playerList)
 		{//updates each player object's label to adhere to their positions
 			playerPosOnScreen = Camera.main.WorldToScreenPoint(player.transform.position) ;
-			GUI.Label(new Rect(playerPosOnScreen.x, Screen.height - playerPosOnScreen.y-100, 100, 50), player.name ) ;
+			GUI.Label(new Rect(playerPosOnScreen.x, Screen.height - playerPosOnScreen.y-100, 100, 50), player.name) ;
 		}
-		playerPosOnScreen = Camera.main.WorldToScreenPoint(rockAsPlayer.transform.position) ;
-		GUI.Label(new Rect(playerPosOnScreen.x, Screen.height - playerPosOnScreen.y-100, 100, 50), rockAsPlayer.name ) ;
+		//playerPosOnScreen = Camera.main.WorldToScreenPoint(rockAsPlayer.transform.position) ; //test for named rock
+		//GUI.Label(new Rect(playerPosOnScreen.x, Screen.height - playerPosOnScreen.y-100, 100, 50), rockAsPlayer.name ) ; //test for named rock
 	}
 	
 	void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
