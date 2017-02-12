@@ -33,7 +33,7 @@ public class OverheadDisplayManager : MonoBehaviour
 	void Update()
 	{
 		playerPosOnScreen = Camera.main.WorldToScreenPoint(rockAsPlayer.transform.position) ;
-		ohui.transform.rotation = rotation ; //keeps canvas from rotating with camera
+		ohui.transform.rotation = rotation ; //keeps canvas from rotating with camera (doesnt work)
 	}
 	
 	void OnGUI()
