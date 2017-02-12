@@ -4,37 +4,56 @@ using System.Collections;
 
 public class TimerScript : MonoBehaviour
 {
-	float timeLeft = 300.0f;
-
 	public Text text;
+	private float timeLeft;	
+	public bool isPause = true;
+
+	void Awake() {
+		//set time to 3s
+		SetTime(3f);
+		Pause();
+	}
+
+	void Start() {
+
+	}
+
+
 
 	void Update()
+	// End graphic?
 	{
-		timeLeft -= Time.deltaTime;
-		Debug.Log (timeLeft);
-		text.text = "hello";
-		text.text = "Time Left:" + Mathf.Round (timeLeft);
-		if (timeLeft < 0) {
-			//TO DO
+		if (isPause == false && timeLeft > 0) {
+			//countdown
+			timeLeft -= Time.deltaTime;
+
 		}
+
+		text.text =  (timeLeft / 60 ).ToString("00")  + ":" + (timeLeft%60).ToString("00");
+			//timeLeft.ToString();
 	}
 
-	//pause 
-	void Pause()
+	//pauses timer when called 
+	// stop counting
+	// Bool function?
+	public void Pause()
 	{
-			
+		isPause = true;
+					
 	}
 
-	//stop
-	void Stop()
-	{
+	//set variable and run update
+	// start counting
+	//bool function? 
+	public void Play(){
 
+		isPause = false;
 	}
 
 	//set time 
 	//have default states
-	void SetTime()
+	public void SetTime(float time)
 	{
-
+		timeLeft = time;
 	}
 }
