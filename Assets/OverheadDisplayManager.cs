@@ -1,7 +1,5 @@
 ﻿/*
-This script will display other users' names above their character model to the player vie GUIskin (automatically orients text?)
-Stretch: names will only be rendered when entering field of view
-	names will scale based on distance from given camera
+This script will display other users' names above their character model to the player via GUIskin (automatically orients text)
 
 REQUIREMENTS
 UI text placed over every character that is not local player
@@ -21,19 +19,37 @@ public class OverheadDisplayManager : MonoBehaviour
 	public GameObject rockAsPlayer ;
 	Vector3 playerPosOnScreen ;
 	
-	//public List<GameObject> playerList = new List<GameObject>() ;
+	public List<GameObject> playerList = new List<GameObject>() ;
 	
 	void Start ()
 	{
+		foreach(GameObject player in GameObject.FindGameObjectsWithTag("Player"))
+		{//collect all players in game at start
+			playerList.Add(player) ;
+		}
 	}
 	
 	void Update()
 	{
-		playerPosOnScreen = Camera.main.WorldToScreenPoint(rockAsPlayer.transform.position) ;
 	}
 	
 	void OnGUI()
-	{		
+	{
+		foreach(GameObject player in playerList)
+		{//updates each player object's label to adhere to their positions
+			playerPosOnScreen = Camera.main.WorldToScreenPoint(player.transform.position) ;
+			GUI.Label(new Rect(playerPosOnScreen.x, Screen.height - playerPosOnScreen.y-100, 100, 50), player.name ) ;
+		}
+		playerPosOnScreen = Camera.main.WorldToScreenPoint(rockAsPlayer.transform.position) ;
 		GUI.Label(new Rect(playerPosOnScreen.x, Screen.height - playerPosOnScreen.y-100, 100, 50), rockAsPlayer.name ) ;
 	}
+	
+	void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
+	{
+		//TODO get inPlayer's gameobject position and add them to the playerList
+	} 	
+	void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
+	{
+		//TODO remove player from the playerList
+	} 
 }
