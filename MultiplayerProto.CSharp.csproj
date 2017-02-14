@@ -248,6 +248,7 @@
     <Compile Include="Assets\SettingsMenu.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Art Assets\Exported Assets\Character test shader v5.shader" />
     <None Include="Assets\Photon Unity Networking\Demos\DemoBoxes\Resources\eurof_tt.txt" />
     <None Include="Assets\Photon Unity Networking\Demos\DemoPickup\Assets\3dFont\3dText.shader" />
     <None Include="Assets\Photon Unity Networking\Demos\DemoRockPaperScissors\Assets\OpenSans\Apache License.txt" />
