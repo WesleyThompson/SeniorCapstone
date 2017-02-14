@@ -9,7 +9,8 @@ public class LocalPlayerManager : MonoBehaviour {
     void Start() {
         if (this.GetComponent<PhotonView>().isMine) {
             localPlayerInstance = this.gameObject;
-            DontDestroyOnLoad(localPlayerInstance);
         }
+        
+        DontDestroyOnLoad(this.gameObject);
     }
 }
