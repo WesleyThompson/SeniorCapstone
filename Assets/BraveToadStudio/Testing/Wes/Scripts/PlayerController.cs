@@ -18,11 +18,39 @@ public class PlayerController : Photon.PunBehaviour {
 	public float slowRate;
 	public float stopThreshold;
 
-	public bool boostActive = false;
-	public float boostMagnitude = (float)30;
-	public float boostPushbackMagnitude = (float)20;
-	public float boostCooldown = 3;
-	private float timeStamp;
+	public float maxVelocity = 0;
+
+
+	//boost variables --------------------------------------------------------------
+	//Becomes true only if an controller's right trigger is pressed...
+	//doesn't go false if controller is then removed 
+	//if logic is in FixedUpdate
+	private bool xboxController = false;
+	//TODO need a better way to determine if the player is using a controller or not
+
+	/*
+	 * bostActive used for determining if a player can pushback another player
+	 * boostMagnitude = strength of boost
+	 * chargeTime = time in seconds to charge boost
+	 * chargeCounter counts the player's charge time
+	 * boostReleased = true when key / trigger for boost is released
+	 */
+	private bool boostActive = false;
+	private float boostMagnitude = (float)10;
+	private float chargeTime = 5;
+	private float chargeCounter = 0;
+	private bool boostReleased = false;
+	/*
+	 * otherPlayersTag = what other players are tagged as
+	 * pushbackMagnitude = strength of pushback against other players during boost
+	 * pushbackTime = time after boost that the player can pushback another player
+	 * pushbackCounter counts the player's pushbackTime
+	 */
+	private string otherPlayersTag = "Player";
+	private float pushbackMagnitude = (float)20;
+	private float pushbackTime = 3;
+	private float pushbackCounter = 0;
+	//---------------------------------------------------------------------------
 
 
 	//Shape stuff
@@ -67,21 +95,41 @@ public class PlayerController : Photon.PunBehaviour {
 			transformView.SetSynchronizedValues(targetDirection * speed, rb.angularVelocity.magnitude);
 
 
-			//boost while '1' key is pressed down or Right Trigger
-			if (timeStamp <= Time.time && (Input.GetKey (KeyCode.Alpha1) == true || Input.GetAxis
-				("Right Trigger") < 0)){
-				boostMagnitude -= rb.velocity.magnitude;
-				if(boostMagnitude < 0)
-						boostMagnitude = 0;
-				rb.AddForce (targetDirection * boostMagnitude, ForceMode.VelocityChange);
-				timeStamp = Time.time+boostCooldown;
-				boostActive = true;
-			} else {
-				if(Time.deltaTime - (timeStamp-boostCooldown) > 3)//hit another player <=3secs after boost knocks them back
-					boostActive = false;
+		//boost implementation ---------------------------------------------------------------------
+			//player is using an xboxController 
+			if( Input.GetAxis("Right Trigger") < 0)
+				xboxController = true;
+
+			//IF KEY PRESSED DOWN chargeCounter increases 
+			if ( (Input.GetKey (KeyCode.Alpha1) == true) || Input.GetAxis("Right Trigger") < -0.1 ){//Input.GetAxis("Right Trigger") < 0    // timeStamp <= Time.time &&
+				chargeCounter += Time.deltaTime;
+				if(chargeCounter >= chargeTime) Debug.Log ("Boost is ready ");
 			}
-			//ISSUE collisions stops boost this may be unintended
-			//ISSUE boost is fast for small players yet is hardly noticible for larger players
+
+			//boostReleased AND charge is ready 
+			//DO THE BOOST
+			if (boostReleased && (chargeCounter >= chargeTime)) { 
+				
+				//BOOST
+				rb.AddForce (targetDirection * boostMagnitude, ForceMode.VelocityChange);
+
+				//RESET COUNTERS BOOST IS ACTIVE
+				chargeCounter = 0;
+				pushbackCounter = 0;
+				boostActive = true;
+				boostReleased = false;
+			} else if (boostReleased) {//key released before charge time; reset counters
+				pushbackCounter = 0;
+				chargeCounter = 0;
+				boostReleased = false;
+			}
+		
+			pushbackCounter += Time.deltaTime;
+			//SET BOOSTACTIVE TO FALSE TO STOP PUSHING OTHER PLAYERS BACK
+			if (boostActive && (pushbackCounter > pushbackTime))//hit another player <= pushbackTime after boost knocks them back
+				boostActive = false;
+			//end of boost implementation -------------------------------------------------------------------
+
 
 
 			// Stop all movement if not touching controls
@@ -102,6 +150,19 @@ public class PlayerController : Photon.PunBehaviour {
 		}
 	}
 
+
+	//need to know immeadiatly if the boost charger was released
+	void Update() {
+		//if the player's using an xboxController check if trigger released
+		if (xboxController) {
+			if((Input.GetAxis ("Right Trigger") > -0.2))
+				boostReleased = true;
+		} 
+		//if player using keyboard check if '1' was released
+		else if (Input.GetKeyUp (KeyCode.Alpha1))
+			boostReleased = true;
+	}
+		
 	void OnCollisionEnter(Collision other) {
 		//This grabs the object layer that belongs to our player
 		if (objLayer == null)
@@ -145,13 +206,13 @@ public class PlayerController : Photon.PunBehaviour {
 		}
 		else {//collided object cannot be picked up
 
+			//BOOST pushback other players ---------------------------
 			//collided into another player
-			if (other.gameObject.tag.Equals ("Player")) {
+			if (other.gameObject.tag.Equals (otherPlayersTag)) {
 				//other player needs to be pushed back if boostActive
 				if (boostActive) {
 					var force = -other.relativeVelocity;
-					other.gameObject.GetComponent<Rigidbody> ().AddForce (force * 
-						boostPushbackMagnitude);
+					other.gameObject.GetComponent<Rigidbody> ().AddForce (force * pushbackMagnitude);
 				}
 			}
 
@@ -194,6 +255,5 @@ public class PlayerController : Photon.PunBehaviour {
 
 		return newBounds;
 	}
-
 
 }
