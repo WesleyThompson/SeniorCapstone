@@ -73,11 +73,11 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
-    <Reference Include="websocket-sharp">
-      <HintPath>Assets\Plugins\WebSocket\websocket-sharp.dll</HintPath>
-    </Reference>
     <Reference Include="Photon3Unity3D">
       <HintPath>Assets\Plugins\Photon3Unity3D.dll</HintPath>
+    </Reference>
+    <Reference Include="websocket-sharp">
+      <HintPath>Assets\Plugins\WebSocket\websocket-sharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +87,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\BraveToadStudio\Testing\Audrey\PlayerSizeScript.cs" />
+    <Compile Include="Assets\BraveToadStudio\Testing\Audrey\TimerScript.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\CameraController.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\CanvasManager.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\FollowPlayerRotate.cs" />
@@ -95,8 +97,17 @@
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\PlayerController.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\RollableItem.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\RoomManager.cs" />
+    <Compile Include="Assets\EZ Camera Shake\Demo\Sample Scripts\ShakeByDistance.cs" />
+    <Compile Include="Assets\EZ Camera Shake\Demo\Sample Scripts\ShakeOnKeyPress.cs" />
+    <Compile Include="Assets\EZ Camera Shake\Demo\Sample Scripts\ShakeOnTrigger.cs" />
+    <Compile Include="Assets\EZ Camera Shake\Demo\ShakeDemo.cs" />
+    <Compile Include="Assets\EZ Camera Shake\Scripts\CameraShakeInstance.cs" />
+    <Compile Include="Assets\EZ Camera Shake\Scripts\CameraShakePresets.cs" />
+    <Compile Include="Assets\EZ Camera Shake\Scripts\CameraShaker.cs" />
+    <Compile Include="Assets\EZ Camera Shake\Scripts\Utilities\CameraUtilities.cs" />
     <Compile Include="Assets\LeaveMatch.cs" />
     <Compile Include="Assets\MainMenuGlobal.cs" />
+    <Compile Include="Assets\OverheadDisplayManager.cs" />
     <Compile Include="Assets\Photon Unity Networking\Demos\Demo2DJumpAndRunWithPhysics\Scripts\Demo2DJumpAndRun.cs" />
     <Compile Include="Assets\Photon Unity Networking\Demos\Demo2DJumpAndRunWithPhysics\Scripts\JumpAndRunMovement.cs" />
     <Compile Include="Assets\Photon Unity Networking\Demos\DemoBoxes\ColorPerPlayer.cs" />
@@ -248,6 +259,7 @@
     <Compile Include="Assets\SettingsMenu.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Art Assets\Exported Assets\Character test shader v5.shader" />
     <None Include="Assets\Photon Unity Networking\Demos\DemoBoxes\Resources\eurof_tt.txt" />
     <None Include="Assets\Photon Unity Networking\Demos\DemoPickup\Assets\3dFont\3dText.shader" />
     <None Include="Assets\Photon Unity Networking\Demos\DemoRockPaperScissors\Assets\OpenSans\Apache License.txt" />

@@ -29,7 +29,7 @@ public class TimerScript : MonoBehaviour
 
 		}
 
-		text.text =  (timeLeft / 60 ).ToString("00")  + ":" + (timeLeft%60).ToString("00");
+		//text.text =  (timeLeft / 60 ).ToString("00")  + ":" + (timeLeft%60).ToString("00");
 			//timeLeft.ToString();
 	}
 
