@@ -92,6 +92,7 @@
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\CameraController.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\CanvasManager.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\FollowPlayerRotate.cs" />
+    <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\GameCanvasManager.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\LocalPlayerManager.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\MouseOrbitImproved.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\PlayerController.cs" />

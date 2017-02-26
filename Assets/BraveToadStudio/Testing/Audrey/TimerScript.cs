@@ -5,56 +5,40 @@ using Photon;
 
 public class TimerScript : PunBehaviour
 {
-	public Text text;
-	private float timeLeft;	
-	public bool isPause = true;
+    [Range(0f, 600f)]
+    public double waitTime;
+    [Range(0f, 600f)]
+    public double matchTime;
 
-	void Awake() {
-		//set time to 3s
-		SetTime(5f);
-		Pause();
-	}
+    bool waitTimeOver = false;
+    bool matchTimeOver = false;
 
-	void Start() {
+    void Start() {
+        //Host does all rpc calls
+        if (PhotonNetwork.isMasterClient) { 
+            
+        }
+    }
 
-	}
-
-	void Update()
-	// End graphic?
-	{
-		if (isPause == false && timeLeft > 0) {
-			//countdown
-			timeLeft -= Time.deltaTime;
-            photonView.RPC("ReportTime", PhotonTargets.AllViaServer, timeLeft);
-		}
-
-		text.text =  (timeLeft / 60 ).ToString("00")  + ":" + (timeLeft%60).ToString("00");
-	}
-
-	//pauses timer when called 
-	// stop counting
-	// Bool function?
-	public void Pause()
-	{
-		isPause = true;
-				
-	}
-
-	//set variable and run update
-	// start counting
-	//bool function? 
-	public void Play(){
-		isPause = false;
-	}
-
-	//set time 
-	//have default states
-	public void SetTime(float time){
-		timeLeft = time;
-	}
-
+    /// <summary>
+    /// Alerts all clients on when the countdown started so they can set their timers accordingly
+    /// </summary>
     [PunRPC]
-    private void ReportTime(float time){
-        timeLeft = time;
+    private void StartCountdown(double countdownStartTime, float time) {
+
+    }
+
+    private void SetCountdown() {
+
+    }
+
+    private IEnumerator Countdown(float time, bool flag) {
+        while(time > 0f)
+        {
+            yield return new WaitForEndOfFrame();
+            time -= Time.deltaTime;
+        }
+
+        flag = true;
     }
 }
