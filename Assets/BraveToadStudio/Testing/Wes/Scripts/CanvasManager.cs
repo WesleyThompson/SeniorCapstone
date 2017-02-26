@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿using Photon;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 //This script takes user input and uses it to interact with UI elements
-public class CanvasManager : MonoBehaviour {
+public class CanvasManager : PunBehaviour {
     public GameObject pauseMenu;
     bool isPaused = false;
 
@@ -27,4 +29,15 @@ public class CanvasManager : MonoBehaviour {
 		SceneManager.LoadScene ("Main Menu");
 		Debug.Log ("Waaaas poppin");
 	}
+
+    public override void OnJoinedRoom() {
+        //TODO make this work when levels change
+        try {
+            GameObject timer = PhotonNetwork.Instantiate("Timer", transform.position, transform.rotation, 0, null);
+            timer.transform.parent = this.transform;
+        }
+        catch (Exception e) {
+            Debug.LogWarning(e.Message);
+        }
+    }
 }

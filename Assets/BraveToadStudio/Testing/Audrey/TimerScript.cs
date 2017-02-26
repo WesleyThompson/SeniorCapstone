@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using Photon;
 
-public class TimerScript : MonoBehaviour
+public class TimerScript : PunBehaviour
 {
 	public Text text;
 	private float timeLeft;	
@@ -10,7 +11,7 @@ public class TimerScript : MonoBehaviour
 
 	void Awake() {
 		//set time to 3s
-		SetTime(3f);
+		SetTime(5f);
 		Pause();
 	}
 
@@ -18,19 +19,16 @@ public class TimerScript : MonoBehaviour
 
 	}
 
-
-
 	void Update()
 	// End graphic?
 	{
 		if (isPause == false && timeLeft > 0) {
 			//countdown
 			timeLeft -= Time.deltaTime;
-
+            photonView.RPC("ReportTime", PhotonTargets.AllViaServer, timeLeft);
 		}
 
 		text.text =  (timeLeft / 60 ).ToString("00")  + ":" + (timeLeft%60).ToString("00");
-			//timeLeft.ToString();
 	}
 
 	//pauses timer when called 
@@ -39,21 +37,24 @@ public class TimerScript : MonoBehaviour
 	public void Pause()
 	{
 		isPause = true;
-					
+				
 	}
 
 	//set variable and run update
 	// start counting
 	//bool function? 
 	public void Play(){
-
 		isPause = false;
 	}
 
 	//set time 
 	//have default states
-	public void SetTime(float time)
-	{
+	public void SetTime(float time){
 		timeLeft = time;
 	}
+
+    [PunRPC]
+    private void ReportTime(float time){
+        timeLeft = time;
+    }
 }
