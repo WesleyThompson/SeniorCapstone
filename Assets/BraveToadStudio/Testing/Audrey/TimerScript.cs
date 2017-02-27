@@ -8,20 +8,18 @@ public class TimerScript : PunBehaviour
     public Text timerText;
 
     [Range(0f, 600f)]
-    public double waitTime;
+    public float waitTime;
     [Range(0f, 600f)]
-    public double matchTime;
+    public float matchTime;
 
     public bool waitTimeOver = false;
     public bool matchTimeOver = false;
+    private bool ranWaitTime = false;
 
     void Start()
     {
-        //Host does all rpc calls
-        if (PhotonNetwork.isMasterClient)
-        {
-            photonView.RPC("StartCountdown", PhotonTargets.AllBuffered, PhotonNetwork.time);
-        }
+        Debug.Log("StartMethod");
+        CallStartCountdown();
     }
 
     void Update() {
@@ -29,19 +27,33 @@ public class TimerScript : PunBehaviour
         {
             timerText.text = ConvertToTime(waitTime);
         }
-        else
+        else if(!matchTimeOver)
         {
-            if (PhotonNetwork.isMasterClient)
+            if(!ranWaitTime)
             {
-                photonView.RPC("StartCountdown", PhotonTargets.AllBuffered, PhotonNetwork.time);
+                CallStartCountdown();
+
+                ranWaitTime = true;
             }
+
             timerText.text = ConvertToTime(matchTime);
         }
     }
 
     private string ConvertToTime(double time)
     {
-        return (time / 60).ToString() + ":" + (time % 60).ToString("00");
+
+        return Mathf.Floor((float) time / 60).ToString() + ":" + (time % 60).ToString("00");
+    }
+
+    private void CallStartCountdown()
+    {
+        Debug.Log("RunningRPC");
+        //Host does all rpc calls
+        if (PhotonNetwork.isMasterClient)
+        {
+            photonView.RPC("StartCountdown", PhotonTargets.AllBuffered, PhotonNetwork.time);
+        }
     }
 
     /// <summary>
@@ -50,13 +62,14 @@ public class TimerScript : PunBehaviour
     [PunRPC]
     private void StartCountdown(double countdownStartTime)
     {
+        
         if (!waitTimeOver)
         {
-            waitTime -= PhotonNetwork.time - countdownStartTime; 
+            waitTime -= (float) (PhotonNetwork.time - countdownStartTime); 
         }
         else if(!matchTimeOver)        
         {
-            matchTime -= PhotonNetwork.time - countdownStartTime;
+            matchTime -= (float)(PhotonNetwork.time - countdownStartTime);
         }
 
         StartCoroutine(Countdown());
@@ -88,6 +101,6 @@ public class TimerScript : PunBehaviour
 
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-       
+       //Weird nonsene if I didn't implement this method
     }
 }

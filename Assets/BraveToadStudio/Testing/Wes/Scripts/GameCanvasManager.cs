@@ -12,15 +12,17 @@ public class GameCanvasManager : PunBehaviour {
 
     void Start() {
         pauseMenu.SetActive(isPaused);
-
-        try
+        if (PhotonNetwork.isMasterClient)
         {
-            GameObject timer = PhotonNetwork.Instantiate("Timer", transform.position, transform.rotation, 0, null);
-            timer.transform.SetParent(this.transform);
-        }
-        catch (Exception e)
-        {
-            Debug.LogWarning(e.Message);
+            try
+            {
+                GameObject timer = PhotonNetwork.Instantiate("Timer", transform.position, transform.rotation, 0, null);
+                timer.transform.SetParent(this.transform);
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning(e.Message);
+            }
         }
     }
 
