@@ -52,9 +52,6 @@
     <Reference Include="UnityEngine">
       <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Advertisements">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Advertisements.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
@@ -69,9 +66,6 @@
     </Reference>
     <Reference Include="UnityEngine.HoloLens">
       <HintPath>Library\UnityAssemblies\UnityEngine.HoloLens.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Purchasing">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Purchasing.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VR">
       <HintPath>Library\UnityAssemblies\UnityEngine.VR.dll</HintPath>
@@ -94,10 +88,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\BraveToadStudio\Testing\Aubrey\DetectHazards.cs" />
+    <Compile Include="Assets\BraveToadStudio\Testing\Audrey\PlayerSizeScript.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Audrey\TimerScript.cs" />
+    <Compile Include="Assets\BraveToadStudio\Testing\Luke\Scripts\CameraFade.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\CameraController.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\CanvasManager.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\FollowPlayerRotate.cs" />
+    <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\GameCanvasManager.cs" />
+    <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\GameManager.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\LocalPlayerManager.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\MouseOrbitImproved.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\PlayerController.cs" />

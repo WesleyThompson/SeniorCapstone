@@ -1,59 +1,128 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using Photon;
+using System;
 
-public class TimerScript : MonoBehaviour
+public class TimerScript : PunBehaviour
 {
-	public Text text;
-	private float timeLeft;	
-	public bool isPause = true;
+    public Text timerText;
 
-	void Awake() {
-		//set time to 3s
-		SetTime(3f);
-		Pause();
-	}
+    [Range(0f, 600f)]
+    public float waitTime;
+    [Range(0f, 600f)]
+    public float matchTime;
 
-	void Start() {
+    public bool waitTimeOver = false;
+    public bool matchTimeOver = false;
 
-	}
+    private bool ranWaitTime = false;
 
+    void Start()
+    {
+        try
+        {
+            transform.parent.GetComponent<GameCanvasManager>().timer = this;
+        } 
+        catch (Exception e)
+        {
+            Debug.LogWarning(e.Message);
+        }
 
+        CallStartCountdown();
+    }
 
-	void Update()
-	// End graphic?
-	{
-		if (isPause == false && timeLeft > 0) {
-			//countdown
-			timeLeft -= Time.deltaTime;
+    void Update() {
+        if (!waitTimeOver)
+        {
+            timerText.text = ConvertToTime(waitTime);
+        }
+        else if(!matchTimeOver)
+        {
+            if(!ranWaitTime)
+            {
+                CallStartCountdown();
 
-		}
+                ranWaitTime = true;
+            }
 
-		//text.text =  (timeLeft / 60 ).ToString("00")  + ":" + (timeLeft%60).ToString("00");
-			//timeLeft.ToString();
-	}
+            timerText.text = ConvertToTime(matchTime);
+        }
+    }
 
-	//pauses timer when called 
-	// stop counting
-	// Bool function?
-	public void Pause()
-	{
-		isPause = true;
-					
-	}
+    /// <summary>
+    /// Helper function that converts a float into minutes and seconds in the format 0:00
+    /// </summary>
+    /// <param name="time">The time in seconds</param>
+    /// <returns>A formatted string representing a time</returns>
+    private string ConvertToTime(float time)
+    {
+        float minutes = Mathf.Floor(time / 60);
+        float seconds = Mathf.Floor(time % 60);
+        return minutes + ":" + seconds.ToString("00");
+    }
 
-	//set variable and run update
-	// start counting
-	//bool function? 
-	public void Play(){
+    /// <summary>
+    /// Calls the RPC StartCountdown() given that this is the master client and that this timer belongs to the local client
+    /// </summary>
+    private void CallStartCountdown()
+    {
+        Debug.Log("RunningRPC");
+        //Host does all rpc calls
+        if (PhotonNetwork.isMasterClient)
+        {
+            photonView.RPC("StartCountdown", PhotonTargets.AllBuffered, PhotonNetwork.time);
+        }
+    }
 
-		isPause = false;
-	}
+    /// <summary>
+    /// Alerts all clients on when the countdown started so they can set their timers accordingly
+    /// </summary>
+    [PunRPC]
+    private void StartCountdown(double countdownStartTime)
+    {
+        
+        if (!waitTimeOver)
+        {
+            waitTime -= (float) (PhotonNetwork.time - countdownStartTime); 
+        }
+        else if(!matchTimeOver)        
+        {
+            matchTime -= (float)(PhotonNetwork.time - countdownStartTime);
+        }
 
-	//set time 
-	//have default states
-	public void SetTime(float time)
-	{
-		timeLeft = time;
-	}
+        StartCoroutine(Countdown());
+    }
+
+    /// <summary>
+    /// Coroutine that does the initial countdown as well counting down the match time
+    /// </summary>
+    private IEnumerator Countdown()
+    {
+        if (!waitTimeOver)
+        {
+            while (waitTime > 0f)
+            {
+                yield return new WaitForEndOfFrame();
+                waitTime -= Time.deltaTime;
+            }
+
+            waitTimeOver = true;
+        }
+        else if (!matchTimeOver)
+        {
+            while (matchTime > 0f)
+            {
+                yield return new WaitForEndOfFrame();
+                matchTime -= Time.deltaTime;
+            }
+
+            matchTimeOver = true;
+        }
+    }
+
+    void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+       //Weird nonsene if I didn't implement this method
+    }
 }
