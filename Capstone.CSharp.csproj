@@ -87,7 +87,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <Compile Include="Assets\BraveToadStudio\Testing\Aubrey\DetectHazards.cs" />
+=======
+    <Compile Include="Assets\BraveToadStudio\Testing\Audrey\PlayerSizeScript.cs" />
+>>>>>>> master
     <Compile Include="Assets\BraveToadStudio\Testing\Audrey\TimerScript.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\CameraController.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\CanvasManager.cs" />
@@ -106,7 +110,10 @@
     <Compile Include="Assets\EZ Camera Shake\Scripts\CameraShakePresets.cs" />
     <Compile Include="Assets\EZ Camera Shake\Scripts\CameraShaker.cs" />
     <Compile Include="Assets\EZ Camera Shake\Scripts\Utilities\CameraUtilities.cs" />
+<<<<<<< HEAD
     <Compile Include="Assets\HazardThing.cs" />
+=======
+>>>>>>> master
     <Compile Include="Assets\LeaveMatch.cs" />
     <Compile Include="Assets\MainMenuGlobal.cs" />
     <Compile Include="Assets\OverheadDisplayManager.cs" />
