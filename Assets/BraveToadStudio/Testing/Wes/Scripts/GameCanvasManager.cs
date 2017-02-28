@@ -7,22 +7,22 @@ using UnityEngine.SceneManagement;
 
 //This script takes user input and uses it to interact with UI elements
 public class GameCanvasManager : PunBehaviour {
+
     public GameObject pauseMenu;
-    bool isPaused = false;
+    public bool isPaused = false;
+
+    public TimerScript timer;
 
     void Start() {
         pauseMenu.SetActive(isPaused);
-        if (PhotonNetwork.isMasterClient)
+        try
         {
-            try
-            {
-                GameObject timer = PhotonNetwork.Instantiate("Timer", transform.position, transform.rotation, 0, null);
-                timer.transform.SetParent(this.transform);
-            }
-            catch (Exception e)
-            {
-                Debug.LogWarning(e.Message);
-            }
+            GameObject timer = PhotonNetwork.Instantiate("Timer", transform.position, transform.rotation, 0, null);
+            timer.transform.SetParent(this.transform);
+        }
+        catch (Exception e)
+        {
+            Debug.LogWarning(e.Message);
         }
     }
 

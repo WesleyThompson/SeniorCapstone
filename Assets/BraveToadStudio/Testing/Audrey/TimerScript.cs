@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using Photon;
+using System;
 
 public class TimerScript : PunBehaviour
 {
@@ -14,11 +15,20 @@ public class TimerScript : PunBehaviour
 
     public bool waitTimeOver = false;
     public bool matchTimeOver = false;
+
     private bool ranWaitTime = false;
 
     void Start()
     {
-        Debug.Log("StartMethod");
+        try
+        {
+            transform.parent.GetComponent<GameCanvasManager>().timer = this;
+        } 
+        catch (Exception e)
+        {
+            Debug.LogWarning(e.Message);
+        }
+
         CallStartCountdown();
     }
 
@@ -40,12 +50,21 @@ public class TimerScript : PunBehaviour
         }
     }
 
-    private string ConvertToTime(double time)
+    /// <summary>
+    /// Helper function that converts a float into minutes and seconds in the format 0:00
+    /// </summary>
+    /// <param name="time">The time in seconds</param>
+    /// <returns>A formatted string representing a time</returns>
+    private string ConvertToTime(float time)
     {
-
-        return Mathf.Floor((float) time / 60).ToString() + ":" + (time % 60).ToString("00");
+        float minutes = Mathf.Floor(time / 60);
+        float seconds = Mathf.Floor(time % 60);
+        return minutes + ":" + seconds.ToString("00");
     }
 
+    /// <summary>
+    /// Calls the RPC StartCountdown() given that this is the master client and that this timer belongs to the local client
+    /// </summary>
     private void CallStartCountdown()
     {
         Debug.Log("RunningRPC");
@@ -75,6 +94,9 @@ public class TimerScript : PunBehaviour
         StartCoroutine(Countdown());
     }
 
+    /// <summary>
+    /// Coroutine that does the initial countdown as well counting down the match time
+    /// </summary>
     private IEnumerator Countdown()
     {
         if (!waitTimeOver)
