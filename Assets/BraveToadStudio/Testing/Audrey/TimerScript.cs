@@ -107,7 +107,7 @@ public class TimerScript : PunBehaviour
                 waitTime -= Time.deltaTime;
             }
 
-            waitTimeOver = true;
+            SetWaitTimeOver();
         }
         else if (!matchTimeOver)
         {
@@ -117,12 +117,33 @@ public class TimerScript : PunBehaviour
                 matchTime -= Time.deltaTime;
             }
 
-            matchTimeOver = true;
+            SetMatchTimeOver();
         }
     }
 
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
        //Weird nonsene if I didn't implement this method
+    }
+
+    public event EventHandler OnSetWaitTimeOver;
+    public event EventHandler OnSetMatchTimeOver;
+
+    private void SetWaitTimeOver()
+    {
+        waitTimeOver = true;
+        if(OnSetWaitTimeOver != null)
+        {
+            OnSetWaitTimeOver(this, null);
+        }
+    }
+
+    private void SetMatchTimeOver()
+    {
+        matchTimeOver = true;
+        if (OnSetMatchTimeOver != null)
+        {
+            OnSetMatchTimeOver(this, null);
+        }
     }
 }
