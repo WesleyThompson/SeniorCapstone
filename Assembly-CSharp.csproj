@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\BraveToadStudio\Testing\Aubrey\DetectHazards.cs" />
+     <Compile Include="Assets\BraveToadStudio\Testing\Aubrey\Respawn.cs" />
      <Compile Include="Assets\BraveToadStudio\Testing\Audrey\TimerScript.cs" />
      <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\CameraController.cs" />
      <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\CanvasManager.cs" />
