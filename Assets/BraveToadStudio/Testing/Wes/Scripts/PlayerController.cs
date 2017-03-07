@@ -31,27 +31,28 @@ public class PlayerController : Photon.PunBehaviour {
 	/*
 	 * bostActive used for determining if a player can pushback another player
 	 * boostMagnitude = strength of boost
-	 * chargeTime = time in seconds to charge boost
+	 * boostMagnitudeFromStandStillMagnitude = strength of boost from standstill
+	 * boostChargeTime = time in seconds to charge boost
 	 * chargeCounter counts the player's charge time
 	 * boostReleased = true when key / trigger for boost is released
 	 */
 	private bool boostActive = false;
-	private float boostMagnitude = (float)10;
-	private float chargeTime = 5;
+	public float boostMagnitude = (float)5;
+	public float boostFromStandStillMagnitude = (float)25;
+	public float boostChargeTime = 1;
 	private float chargeCounter = 0;
 	private bool boostReleased = false;
 	/*
 	 * otherPlayersTag = what other players are tagged as
-	 * pushbackMagnitude = strength of pushback against other players during boost
+	 * pushbackMagnitude = strength of pushback against other players
 	 * pushbackTime = time after boost that the player can pushback another player
 	 * pushbackCounter counts the player's pushbackTime
 	 */
 	private string otherPlayersTag = "Player";
-	private float pushbackMagnitude = (float)20;
-	private float pushbackTime = 3;
+	public float pushbackMagnitude = (float)7.5;
+	public float pushbackTime = 3;
 	private float pushbackCounter = 0;
 	//---------------------------------------------------------------------------
-
 
 	//Shape stuff
 	private Vector3 sizeTarget;
@@ -77,6 +78,7 @@ public class PlayerController : Photon.PunBehaviour {
 		Debug.Log("Size " + sizeTarget);
 	}
 
+
 	void FixedUpdate () {
 		if (parentPhotonView.isMine) //Make sure this is our player before controlling
 		{
@@ -87,6 +89,7 @@ public class PlayerController : Photon.PunBehaviour {
 
 			// Adjust the target direction based on the direction the camera is facing
 			targetDirection = Camera.main.transform.TransformDirection(targetDirection);
+		//	Debug.Log (Camera.main.transform.rotation.eulerAngles);
 			// Reset the Y direction of our target direction
 			targetDirection.y = 0f;
 
@@ -103,15 +106,25 @@ public class PlayerController : Photon.PunBehaviour {
 			//IF KEY PRESSED DOWN chargeCounter increases 
 			if ( (Input.GetKey (KeyCode.Alpha1) == true) || Input.GetAxis("Right Trigger") < -0.1 ){//Input.GetAxis("Right Trigger") < 0    // timeStamp <= Time.time &&
 				chargeCounter += Time.deltaTime;
-				if(chargeCounter >= chargeTime) Debug.Log ("Boost is ready ");
+				if(chargeCounter >= boostChargeTime) Debug.Log ("Boost is ready ");
 			}
 
 			//boostReleased AND charge is ready 
 			//DO THE BOOST
-			if (boostReleased && (chargeCounter >= chargeTime)) { 
-				
-				//BOOST
-				rb.AddForce (targetDirection * boostMagnitude, ForceMode.VelocityChange);
+			if (boostReleased && (chargeCounter >= boostChargeTime)) { 
+				//BOOST FROM STANDSTILL
+				if (targetDirection.magnitude == 0) {
+					Vector3 booster = Camera.main.transform.forward;
+					booster.Normalize ();
+					Vector3 zeroScale = new Vector3 (boostFromStandStillMagnitude,boostFromStandStillMagnitude, boostFromStandStillMagnitude);
+					booster.Scale (zeroScale);
+					rb.AddForce (booster, ForceMode.Impulse);
+					//Debug.Log ("booster is " + booster + " plus boost is " + booster * boostMagnitude);
+				} 
+				else { //BOOST TOWARDS TARGETDIRECTION
+					targetDirection.Scale (new Vector3 (boostMagnitude, boostMagnitude, boostMagnitude));
+					rb.AddForce (targetDirection* boostMagnitude, ForceMode.VelocityChange);
+				}
 
 				//RESET COUNTERS BOOST IS ACTIVE
 				chargeCounter = 0;
@@ -124,6 +137,7 @@ public class PlayerController : Photon.PunBehaviour {
 				boostReleased = false;
 			}
 		
+
 			pushbackCounter += Time.deltaTime;
 			//SET BOOSTACTIVE TO FALSE TO STOP PUSHING OTHER PLAYERS BACK
 			if (boostActive && (pushbackCounter > pushbackTime))//hit another player <= pushbackTime after boost knocks them back
@@ -136,8 +150,7 @@ public class PlayerController : Photon.PunBehaviour {
 			// TODO this section will NOT work with controllers. Controllers sometimes never reach 0
 			//     since they are analog. Need to add "Dead-Zone" aka a range of values that are close
 			//     enough to 0 to call it 0.
-			if (horizontal == 0f && vertical == 0f)
-			{
+			if (horizontal == 0f && vertical == 0f){
 				rb.velocity *= slowRate;
 				rb.angularVelocity *= slowRate;
 			}
@@ -147,10 +160,11 @@ public class PlayerController : Photon.PunBehaviour {
 				float delta = Time.deltaTime * sizeLerpSpeed;
 				transform.localScale = Vector3.Lerp(transform.localScale, sizeTarget, delta);
 			}
+
+
 		}
 	}
-
-
+		
 	//need to know immeadiatly if the boost charger was released
 	void Update() {
 		//if the player's using an xboxController check if trigger released
@@ -206,13 +220,45 @@ public class PlayerController : Photon.PunBehaviour {
 		}
 		else {//collided object cannot be picked up
 
-			//BOOST pushback other players ---------------------------
+
 			//collided into another player
 			if (other.gameObject.tag.Equals (otherPlayersTag)) {
+				
+
+				//TODO Steal mechanic --------------------------------------------------------------------------------
+				//some condition will allow this player to steal from another
+				bool stealCondition = true;
+
+				//can't steal from another player with a minimun size 
+				float minSize = 0;
+				float otherPlayerSize = other.collider.bounds.size.magnitude;
+
+				if (stealCondition && otherPlayerSize > minSize) {
+
+
+					//TODO need some size to steal
+					//Vector3 stealSize;
+
+
+
+					//TODO 
+					//take the size away from the other player
+
+
+					//add the size to this player
+					//sizeTarget = ConvertVectorToDisplacement (stealSize);
+
+					//TODO
+					//Animation of this mechanic
+
+				}
+					
 				//other player needs to be pushed back if boostActive
 				if (boostActive) {
 					var force = -other.relativeVelocity;
-					other.gameObject.GetComponent<Rigidbody> ().AddForce (force * pushbackMagnitude);
+					force.Normalize ();
+					force.Scale (new Vector3 (pushbackMagnitude, pushbackMagnitude, pushbackMagnitude));
+					other.gameObject.GetComponent<Rigidbody> ().AddForce (force);
 				}
 			}
 
