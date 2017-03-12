@@ -17,14 +17,13 @@ public class HazardThing : MonoBehaviour {
 
 		void OnTriggerEnter(Collider other) {
 			if(other.gameObject.tag == "Player"){
-				print ("Player entered trigger "+other.gameObject.name);
+                other.GetComponent<Respawn>().RespawnPlayer();
 			}
 
 		}
 
 		void OnTriggerExit(Collider Other){
 			if(Other.gameObject.tag == "Player"){
-				print("Player exited the trigger");
 
 			}
 		}
