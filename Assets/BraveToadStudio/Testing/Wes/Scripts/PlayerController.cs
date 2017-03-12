@@ -72,7 +72,7 @@ public class PlayerController : Photon.PunBehaviour {
 		parentPhotonView = GetComponentInParent<PhotonView>();
 		transformView = GetComponent<PhotonTransformView>();
 		
-		splatPrefab = GameObject.Find("splatPrefab") ;
+		splatPrefab = (GameObject)Resources.Load("splatPrefab") ;//NOTE: the splatPrefab must be located in the Resources folder for this to work
 
 		sizeTarget = transform.localScale;
 		Debug.Log("Size " + sizeTarget);
@@ -201,7 +201,6 @@ public class PlayerController : Photon.PunBehaviour {
 		//instantiate splat prefab and attach splatController script onto it
 		foreach(ContactPoint contact in other.contacts)
 		{//should this loop through all collisions or only other.contacts[0]?
-			//contact.point, contact.normal
 			Debug.Log("hit " + other.gameObject.name) ;
 			//GameObject splat = PhotonNetwork.Instantiate("splatPrefab", contact.point, Quaternion.FromToRotation(Vector3.up, contact.normal), 0) ; //NEEDS PHOTONVIEW COMPONENT
 			GameObject splat = Instantiate(splatPrefab, contact.point, Quaternion.FromToRotation(Vector3.up, contact.normal)) ;
