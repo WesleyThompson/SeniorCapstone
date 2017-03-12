@@ -12,6 +12,8 @@ public class PlayerController : Photon.PunBehaviour {
 	private PhotonView parentPhotonView;
 	private PhotonTransformView transformView;
 	public GameObject objLayer;
+	
+	public Transform splatPrefab ;
 
 	public float speed;
 	[Range(0,1)]
@@ -195,9 +197,11 @@ public class PlayerController : Photon.PunBehaviour {
 		
 		//instantiate splat prefab and attach splatController script onto it
 		foreach(ContactPoint contact in other.contacts)
-		{
-			Debug.DrawRay(contact.point, contact.normal, Color.white) ;
+		{//should this loop through all collisions or only other.contacts[0]?
+			//contact.point, contact.normal
 			Debug.Log("hit " + other.gameObject.name) ;
+			GameObject splat = PhotonNetwork.Instantiate("splatPrefab", contact.point, Quaternion.FromToRotation(Vector3.up, contact.normal), 0) ;
+			splat.AddComponent<splatController>() ;
 		}
 	}
 
