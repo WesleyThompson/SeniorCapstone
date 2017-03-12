@@ -192,6 +192,13 @@ public class PlayerController : Photon.PunBehaviour {
 			playSound(other, audioNonPickups);
 		else //collision with untagged objects player can't pickup play'audioGround'
 			playSound (other, audioGround);
+		
+		//instantiate splat prefab and attach splatController script onto it
+		foreach(ContactPoint contact in other.contacts)
+		{
+			Debug.DrawRay(contact.point, contact.normal, Color.white) ;
+			Debug.Log("hit " + other.gameObject.name) ;
+		}
 	}
 
 	private void CollidedIntoPlayer(Collision other){
