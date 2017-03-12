@@ -13,8 +13,9 @@ public class PlayerController : Photon.PunBehaviour {
 	private PhotonTransformView transformView;
 	public GameObject objLayer;
 	
-	public Transform splatPrefab ;
-
+	//public Transform splatPrefab ; //for when we use PhotonNetwork.Instantiate
+	public GameObject splatPrefab ;
+	
 	public float speed;
 	[Range(0,1)]
 	public float slowRate;
@@ -70,6 +71,8 @@ public class PlayerController : Photon.PunBehaviour {
 
 		parentPhotonView = GetComponentInParent<PhotonView>();
 		transformView = GetComponent<PhotonTransformView>();
+		
+		splatPrefab = GameObject.Find("splatPrefab") ;
 
 		sizeTarget = transform.localScale;
 		Debug.Log("Size " + sizeTarget);
@@ -200,7 +203,8 @@ public class PlayerController : Photon.PunBehaviour {
 		{//should this loop through all collisions or only other.contacts[0]?
 			//contact.point, contact.normal
 			Debug.Log("hit " + other.gameObject.name) ;
-			GameObject splat = PhotonNetwork.Instantiate("splatPrefab", contact.point, Quaternion.FromToRotation(Vector3.up, contact.normal), 0) ;
+			//GameObject splat = PhotonNetwork.Instantiate("splatPrefab", contact.point, Quaternion.FromToRotation(Vector3.up, contact.normal), 0) ; //NEEDS PHOTONVIEW COMPONENT
+			GameObject splat = Instantiate(splatPrefab, contact.point, Quaternion.FromToRotation(Vector3.up, contact.normal)) ;
 			splat.AddComponent<splatController>() ;
 		}
 	}
