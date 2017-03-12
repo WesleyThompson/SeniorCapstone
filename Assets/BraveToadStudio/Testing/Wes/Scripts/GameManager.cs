@@ -38,7 +38,7 @@ public class GameManager : PunBehaviour {
     private void LoadWinScene() {
         if(PhotonNetwork.isMasterClient)
         {
-            PhotonNetwork.LoadLevel("Main Menu");
+            PhotonNetwork.LoadLevel("LobbyIslandForreal");
         }
     }
 
@@ -66,6 +66,7 @@ public class GameManager : PunBehaviour {
     {
         Debug.Log("Match Concluded");
         DecideWinner();
+        LoadMainMenu();
     }
 
     private void DecideWinner()
@@ -83,5 +84,14 @@ public class GameManager : PunBehaviour {
         }
 
         Debug.Log("The winner is " + currentMaxPlayer.name + " with a diameter of " + maxScale + " meters");
+    }
+
+    private void LoadMainMenu()
+    {
+        if (PhotonNetwork.isMasterClient)
+        {
+            PhotonNetwork.DestroyAll();
+        }
+        PhotonNetwork.LoadLevel("Main Menu");
     }
 }
