@@ -24,7 +24,6 @@ public class GameManager : PunBehaviour {
 	
 	void Update ()
     {
-        //TODO replace some of this mess with some sweet event driven stuff
         if (timer == null)
         {
             if(gcManager.timer != null)
@@ -92,6 +91,11 @@ public class GameManager : PunBehaviour {
         {
             PhotonNetwork.DestroyAll();
         }
+        PhotonNetwork.LeaveRoom();
+    }
+
+    public override void OnLeftRoom()
+    {
         PhotonNetwork.LoadLevel("Main Menu");
     }
 }
