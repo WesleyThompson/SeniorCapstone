@@ -169,6 +169,8 @@ public class PlayerController : Photon.PunBehaviour {
 			CollidedIntoPlayer (other);
 		else if (other.gameObject.tag.Equals ("Pickup") && colliderSize.magnitude <= playerSize)//collided into an obj that must be picked up
 			CollidedIntoPickup (other, colliderSize);
+		else if(other.gameObject.tag.Equals("Pickup") && colliderSize.magnitude > playerSize) //collided into pickup too big to pickup
+			CollidedIntoNonPickup(other) ; //call nonpickup collision method
 		else
 			CollidedIntoNonPickup (other);//collided into an obj that cannot be picked up
 	}
@@ -199,12 +201,15 @@ public class PlayerController : Photon.PunBehaviour {
 			playSound (other, audioGround);
 		
 		//instantiate splat prefab and attach splatController script onto it
-		foreach(ContactPoint contact in other.contacts)
-		{//should this loop through all collisions or only other.contacts[0]?
-			Debug.Log("hit " + other.gameObject.name) ;
-			//GameObject splat = PhotonNetwork.Instantiate("splatPrefab", contact.point, Quaternion.FromToRotation(Vector3.up, contact.normal), 0) ; //NEEDS PHOTONVIEW COMPONENT
-			GameObject splat = Instantiate(splatPrefab, contact.point, Quaternion.FromToRotation(Vector3.up, contact.normal)) ;
-			splat.AddComponent<splatController>() ;
+		if(rb.velocity >= 1.5)
+		{
+			foreach(ContactPoint contact in other.contacts)
+			{//should this loop through all collisions or only other.contacts[0]?
+				Debug.Log("hit " + other.gameObject.name) ;
+				GameObject splat = PhotonNetwork.Instantiate("splatPrefab", contact.point, Quaternion.FromToRotation(Vector3.up, contact.normal), 0) ; //NEEDS PHOTONVIEW COMPONENT
+				//GameObject splat = Instantiate(splatPrefab, contact.point, Quaternion.FromToRotation(Vector3.up, contact.normal)) ;
+				splat.AddComponent<splatController>() ;
+			}
 		}
 	}
 
