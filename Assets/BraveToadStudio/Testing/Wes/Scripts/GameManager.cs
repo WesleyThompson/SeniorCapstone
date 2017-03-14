@@ -24,7 +24,6 @@ public class GameManager : PunBehaviour {
 	
 	void Update ()
     {
-        //TODO replace some of this mess with some sweet event driven stuff
         if (timer == null)
         {
             if(gcManager.timer != null)
@@ -38,7 +37,7 @@ public class GameManager : PunBehaviour {
     private void LoadWinScene() {
         if(PhotonNetwork.isMasterClient)
         {
-            PhotonNetwork.LoadLevel("Main Menu");
+            PhotonNetwork.LoadLevel("LobbyIslandForreal");
         }
     }
 
@@ -66,6 +65,7 @@ public class GameManager : PunBehaviour {
     {
         Debug.Log("Match Concluded");
         DecideWinner();
+        LoadMainMenu();
     }
 
     private void DecideWinner()
@@ -83,5 +83,19 @@ public class GameManager : PunBehaviour {
         }
 
         Debug.Log("The winner is " + currentMaxPlayer.name + " with a diameter of " + maxScale + " meters");
+    }
+
+    private void LoadMainMenu()
+    {
+        if (PhotonNetwork.isMasterClient)
+        {
+            PhotonNetwork.DestroyAll();
+        }
+        PhotonNetwork.LeaveRoom();
+    }
+
+    public override void OnLeftRoom()
+    {
+        PhotonNetwork.LoadLevel("Main Menu");
     }
 }
