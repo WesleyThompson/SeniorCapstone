@@ -62,7 +62,7 @@ public class PlayerController : Photon.PunBehaviour {
 	AudioSource audioGround;
 
 	void Start () {
-		rb = GetComponent<Rigidbody>();
+		rb = GetComponent<Rigidbody>(); //get rigid body of player this script is attached to
 
 		AudioSource[] audios = GetComponents<AudioSource> ();
 		audioNonPickups = audios [0];
@@ -199,14 +199,14 @@ public class PlayerController : Photon.PunBehaviour {
 			playSound(other, audioNonPickups);
 		else //collision with untagged objects player can't pickup play'audioGround'
 			playSound (other, audioGround);
-		
-		//instantiate splat prefab and attach splatController script onto it
-		if(rb.velocity >= 1.5)
-		{
+			
+		double minSplatVelocity = 1.5 ;
+		if(rb.velocity.magnitude >= minSplatVelocity) //&& other.gameObject.tag != "Ground") //TODO, make a "Ground" tag to avoid random collision executions on the ground planes
+		{//if player is going fast
 			foreach(ContactPoint contact in other.contacts)
-			{//should this loop through all collisions or only other.contacts[0]?
+			{//instantiate splat prefab and attach splatController script onto it
 				Debug.Log("hit " + other.gameObject.name) ;
-				GameObject splat = PhotonNetwork.Instantiate("splatPrefab", contact.point, Quaternion.FromToRotation(Vector3.up, contact.normal), 0) ; //NEEDS PHOTONVIEW COMPONENT
+				GameObject splat = PhotonNetwork.Instantiate("splatPrefab", contact.point, Quaternion.FromToRotation(Vector3.up, contact.normal), 0) ;
 				//GameObject splat = Instantiate(splatPrefab, contact.point, Quaternion.FromToRotation(Vector3.up, contact.normal)) ;
 				splat.AddComponent<splatController>() ;
 			}

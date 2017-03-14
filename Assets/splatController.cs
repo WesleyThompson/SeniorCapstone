@@ -1,5 +1,5 @@
 ﻿/*
-This script, after attached to an object, will scale that object up in size until a certain amount of time passes, then delete that object
+This script, will scale that object up in size until a certain amount of time passes, then delete that object
 */
 
 using System.Collections;
@@ -16,7 +16,7 @@ public class splatController : MonoBehaviour
 		Vector3 originScaleFactor = this.transform.localScale ;
 		duration = 1 ; //time in seconds
 		xScaleFactor = Time.deltaTime ;
-		yScaleFactor = 0 ; //indicates "up" axis
+		yScaleFactor = 0 ; //0 indicates "up" axis
 		zScaleFactor = Time.deltaTime ;
 	}
 	
