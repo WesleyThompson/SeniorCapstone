@@ -21,43 +21,39 @@ public class PlayerController : Photon.PunBehaviour {
 	public float maxVelocity = 0;
 
 
-	//boost variables --------------------------------------------------------------
 	//Becomes true only if an controller's right trigger is pressed...
-	//doesn't go false if controller is then removed 
-	//if logic is in FixedUpdate
-	private bool xboxController = false;
+	//doesn't go false if controller is then removed; logic is in Boost method
 	//TODO need a better way to determine if the player is using a controller or not
+	private bool xboxController = false;
 
-	/*
-	 * bostActive used for determining if a player can pushback another player
-	 * boostMagnitude = strength of boost
-	 * chargeTime = time in seconds to charge boost
+	/* BOOST VARIABLES
+	 * boostMagnitude = strength of boost when player is already moving
+	 * boostMagnitudeFromStandstillMagnitude = strength of boost from standstill
+	 * boostChargeTime = time in seconds to charge boost
 	 * chargeCounter counts the player's charge time
 	 * boostReleased = true when key / trigger for boost is released
 	 */
-	private bool boostActive = false;
-	private float boostMagnitude = (float)10;
-	private float chargeTime = 5;
+	public float boostMagnitude = 4;
+	public float boostFromStandstillMagnitude = 25;
+	public float boostChargeTime = 1;
 	private float chargeCounter = 0;
 	private bool boostReleased = false;
-	/*
+
+	/*playerPushPlayer variables
 	 * otherPlayersTag = what other players are tagged as
-	 * pushbackMagnitude = strength of pushback against other players during boost
-	 * pushbackTime = time after boost that the player can pushback another player
-	 * pushbackCounter counts the player's pushbackTime
+	 * pushbackMagnitude = strength of pushback against other players
+	 * pushbackThresholdVelocity = velocity the OTHER player must be greater than to push back THIS Player
 	 */
 	private string otherPlayersTag = "Player";
-	private float pushbackMagnitude = (float)20;
-	private float pushbackTime = 3;
-	private float pushbackCounter = 0;
-	//---------------------------------------------------------------------------
-
+	public float pushbackMagnitude = (float)5;//a bit stronger than boost magnitude is good maybe
+	public float pushbackThresholdVelocity = 4;
 
 	//Shape stuff
 	private Vector3 sizeTarget;
 	public float sizeLerpSpeed;
 
 	//Audio stuff
+	public float VelocityTriggerAudio = (float)1.5;//collision realitve velocity must exceed this to play sounds
 	AudioSource audioNonPickups;
 	AudioSource audioPickups;
 	AudioSource audioGround;
@@ -76,10 +72,10 @@ public class PlayerController : Photon.PunBehaviour {
 		sizeTarget = transform.localScale;
 		Debug.Log("Size " + sizeTarget);
 	}
-
+		
 	void FixedUpdate () {
-		if (parentPhotonView.isMine) //Make sure this is our player before controlling
-		{
+		if (parentPhotonView.isMine){ //Make sure this is our player before controlling
+			
 			// Using this allows us to get cross-platform input
 			float horizontal = Input.GetAxis("Horizontal");
 			float vertical = Input.GetAxis("Vertical");
@@ -87,6 +83,7 @@ public class PlayerController : Photon.PunBehaviour {
 
 			// Adjust the target direction based on the direction the camera is facing
 			targetDirection = Camera.main.transform.TransformDirection(targetDirection);
+
 			// Reset the Y direction of our target direction
 			targetDirection.y = 0f;
 
@@ -94,50 +91,13 @@ public class PlayerController : Photon.PunBehaviour {
 			//Synchronizing stuff to make other players look smoother
 			transformView.SetSynchronizedValues(targetDirection * speed, rb.angularVelocity.magnitude);
 
-
-		//boost implementation ---------------------------------------------------------------------
-			//player is using an xboxController 
-			if( Input.GetAxis("Right Trigger") < 0)
-				xboxController = true;
-
-			//IF KEY PRESSED DOWN chargeCounter increases 
-			if ( (Input.GetKey (KeyCode.Alpha1) == true) || Input.GetAxis("Right Trigger") < -0.1 ){//Input.GetAxis("Right Trigger") < 0    // timeStamp <= Time.time &&
-				chargeCounter += Time.deltaTime;
-				if(chargeCounter >= chargeTime) Debug.Log ("Boost is ready ");
-			}
-
-			//boostReleased AND charge is ready 
-			//DO THE BOOST
-			if (boostReleased && (chargeCounter >= chargeTime)) { 
-				
-				//BOOST
-				rb.AddForce (targetDirection * boostMagnitude, ForceMode.VelocityChange);
-
-				//RESET COUNTERS BOOST IS ACTIVE
-				chargeCounter = 0;
-				pushbackCounter = 0;
-				boostActive = true;
-				boostReleased = false;
-			} else if (boostReleased) {//key released before charge time; reset counters
-				pushbackCounter = 0;
-				chargeCounter = 0;
-				boostReleased = false;
-			}
-		
-			pushbackCounter += Time.deltaTime;
-			//SET BOOSTACTIVE TO FALSE TO STOP PUSHING OTHER PLAYERS BACK
-			if (boostActive && (pushbackCounter > pushbackTime))//hit another player <= pushbackTime after boost knocks them back
-				boostActive = false;
-			//end of boost implementation -------------------------------------------------------------------
-
-
+			Boost (targetDirection);
 
 			// Stop all movement if not touching controls
 			// TODO this section will NOT work with controllers. Controllers sometimes never reach 0
 			//     since they are analog. Need to add "Dead-Zone" aka a range of values that are close
 			//     enough to 0 to call it 0.
-			if (horizontal == 0f && vertical == 0f)
-			{
+			if (horizontal == 0f && vertical == 0f){
 				rb.velocity *= slowRate;
 				rb.angularVelocity *= slowRate;
 			}
@@ -150,7 +110,39 @@ public class PlayerController : Photon.PunBehaviour {
 		}
 	}
 
+	private void Boost(Vector3 targetDirection){
+		//player is using an xboxController 
+		if( Input.GetAxis("Right Trigger") < 0)
+			xboxController = true;
 
+		//IF KEY/TRIGGER PRESSED DOWN chargeCounter increases 
+		if ( (Input.GetKey (KeyCode.Alpha1) == true) || Input.GetAxis("Right Trigger") < -0.1 ){
+			chargeCounter += Time.deltaTime;
+			if(chargeCounter >= boostChargeTime) Debug.Log ("Boost is ready ");
+		}
+
+		//if boostReleased AND charge is ready 
+		if (boostReleased && (chargeCounter >= boostChargeTime)) {//DO THE BOOST 
+			if (targetDirection.magnitude == 0) {//BOOST FROM STANDSTILL
+				Vector3 booster = Camera.main.transform.forward;
+				booster.Normalize ();
+				Vector3 zeroScale = new Vector3 (boostFromStandstillMagnitude,boostFromStandstillMagnitude, boostFromStandstillMagnitude);
+				booster.Scale (zeroScale);
+				rb.AddForce (booster, ForceMode.Impulse);
+			} 
+			else { //BOOST TOWARDS TARGETDIRECTION
+				targetDirection.Scale (new Vector3 (boostMagnitude, boostMagnitude, boostMagnitude));
+				rb.AddForce (targetDirection* boostMagnitude, ForceMode.VelocityChange);
+			}
+			//RESET COUNTERS BOOST IS ACTIVE
+			chargeCounter = 0;
+			boostReleased = false;
+		} else if (boostReleased) {//key released before charge time; reset counters
+			chargeCounter = 0;
+			boostReleased = false;
+		}
+	}
+		
 	//need to know immeadiatly if the boost charger was released
 	void Update() {
 		//if the player's using an xboxController check if trigger released
@@ -164,78 +156,72 @@ public class PlayerController : Photon.PunBehaviour {
 	}
 		
 	void OnCollisionEnter(Collision other) {
-		//This grabs the object layer that belongs to our player
-		if (objLayer == null)
-		{
-			GameObject[] objs = GameObject.FindGameObjectsWithTag("ObjectLayer");
-			foreach (GameObject obj in objs)
-			{
-				if (obj.transform.parent.gameObject.GetPhotonView().ownerId == gameObject.GetPhotonView().ownerId)
-				{
-					objLayer = obj;
-				}
-			}
-		}
-
-		var colliderSize = other.collider.bounds.size.magnitude;
+		GrabPlayerObjectLayer();
+	
+		Vector3 colliderSize = other.collider.bounds.size;//size of what player collided into
 		var playerSize = GetComponent<Collider> ().bounds.size.magnitude;
-
-
-		//Picking up objects adding to player
-		if (other.gameObject.tag.Equals ("Pickup") && colliderSize <= playerSize) {
-
-			//Grab the size of the pickups collider
-			Vector3 size = other.collider.bounds.size;
-
-			//Disable the collider and parent the object to the player
-			other.collider.enabled = false;
-			other.transform.parent = objLayer.transform;
-
-			//Add the target size of our player
-			sizeTarget = ConvertVectorToDisplacement (size);
-
-			//Audio for collision with object the player is big enough to pickup
-			//Collision must meet threshold velocity
-			if (other.relativeVelocity.magnitude > 1.5) {
-
-				//if the sound is playing don't play it a second time
-				if (!GetComponent<AudioSource> ().isPlaying) { 
-					audioPickups.Play ();
-				}
-			}
-		}
-		else {//collided object cannot be picked up
-
-			//BOOST pushback other players ---------------------------
-			//collided into another player
-			if (other.gameObject.tag.Equals (otherPlayersTag)) {
-				//other player needs to be pushed back if boostActive
-				if (boostActive) {
-					var force = -other.relativeVelocity;
-					other.gameObject.GetComponent<Rigidbody> ().AddForce (force * pushbackMagnitude);
-				}
-			}
-
-			//Audio for collision with objects the player is not big enough to pickup
-			//Collision must meet threshold velocity
-			if (other.relativeVelocity.magnitude > 1.5) { 
-				//tagged objects do not trigger ground sound
-				if (other.gameObject.tag != "Untagged") {
-					//if the sound is playing don't play it a second time
-					if (!GetComponent<AudioSource> ().isPlaying) {
-						audioNonPickups.Play ();
-					}
-				}
-				else {//ground
-					//if the sound is playing don't play it a second time
-					if (!GetComponent<AudioSource> ().isPlaying) {
-						audioGround.Play ();
-					}
-				}
+		if (other.gameObject.tag.Equals (otherPlayersTag))
+			CollidedIntoPlayer (other);
+		else if (other.gameObject.tag.Equals ("Pickup") && colliderSize.magnitude <= playerSize)//collided into an obj that must be picked up
+			CollidedIntoPickup (other, colliderSize);
+		else
+			CollidedIntoNonPickup (other);//collided into an obj that cannot be picked up
+	}
+		
+	private void GrabPlayerObjectLayer(){
+		if (objLayer == null){
+			GameObject[] objs = GameObject.FindGameObjectsWithTag("ObjectLayer");
+			foreach (GameObject obj in objs){
+				if (obj.transform.parent.gameObject.GetPhotonView().ownerId == gameObject.GetPhotonView().ownerId)
+					objLayer = obj;
 			}
 		}
 	}
 
+	private void CollidedIntoPickup(Collision other, Vector3 ColliderSize){
+		//Disable the collider and parent the object to the player
+		other.collider.enabled = false;
+		other.transform.parent = objLayer.transform;
+		//Add the target size of our player
+		sizeTarget = ConvertVectorToDisplacement (ColliderSize);
+		playSound(other,audioPickups);
+	}
+
+	private void CollidedIntoNonPickup(Collision other){
+		if (other.gameObject.tag != "Untagged")//collision with tagged objects player can't pickup play 'audioNonPickups'
+			playSound(other, audioNonPickups);
+		else //collision with untagged objects player can't pickup play'audioGround'
+			playSound (other, audioGround);
+	}
+
+	private void CollidedIntoPlayer(Collision other){
+
+		Debug.Log ("velocity on collision with palyer is " + rb.velocity.magnitude);
+		//PlayerPushPlayer Implementation
+		float otherPlayerVelocity = other.relativeVelocity.magnitude - rb.velocity.magnitude;
+		if (otherPlayerVelocity > pushbackThresholdVelocity) {//then THIS player needs to be pushed back
+			var force = other.relativeVelocity;
+			force.Normalize ();
+			force.Scale (new Vector3 (pushbackMagnitude, pushbackMagnitude, pushbackMagnitude));
+			BumpPlayer (force);
+		}
+	
+		//TODO steal mechanic implementation
+		bool stealCondition = false;//some condition will allow this player to steal from another
+		if (stealCondition)
+			Steal (other);
+	}
+
+	public void BumpPlayer(Vector3 magnitude){
+		rb.AddForce (magnitude, ForceMode.Impulse);
+	}
+		
+	private void playSound(Collision other, AudioSource audio){
+		if (other.relativeVelocity.magnitude > VelocityTriggerAudio) {
+			if (!GetComponent<AudioSource> ().isPlaying)
+				audio.Play ();
+		}
+	}
 
 	private Vector3 ConvertVectorToDisplacement(Vector3 size) {
 		float total = size.x + size.y + size.z;
@@ -255,5 +241,37 @@ public class PlayerController : Photon.PunBehaviour {
 
 		return newBounds;
 	}
+		
+	//TODO Steal
+	public float minSize = 1;//can't steal from another player with a minimun size 
+	public float stealMagnitude = 1;//size that is stolen...
+	private void Steal(Collision other){
+		Vector3 otherPlayerSize = other.collider.bounds.size;
+		if (otherPlayerSize.magnitude > minSize) {//Can steal
 
+			//need some size to steal
+			Vector3 stealSize = otherPlayerSize;
+			stealSize.Normalize ();
+			/*TODO
+				steal size could be determined by the size of who the player steals from
+				ex. steal a larger amount from a large player 
+					and steal a samller amount from a small player
+
+				or steal size could be standard
+				ex. steal the same amount of size whether stealling from a large or small player
+			*/
+			Vector3 stealSizeScaler = new Vector3 (stealMagnitude,stealMagnitude, stealMagnitude);
+			stealSize.Scale (stealSizeScaler);
+
+
+			//TODO 
+			//take the size away from the other player
+
+			//add the size to this player
+			sizeTarget = ConvertVectorToDisplacement (stealSize);
+
+			//TODO
+			//Animation of this mechanic
+		}
+	}
 }

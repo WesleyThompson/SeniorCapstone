@@ -1,18 +1,12 @@
 fileFormatVersion: 2
-<<<<<<< HEAD:Assets/XInputDotNet.meta
-guid: 4a5a5dbcea73ddc47af7cd2cfc8b78ba
+<<<<<<< HEAD:Assets/BraveToadStudio/Testing/Chadwick/loadingAnimation.meta
+guid: f7741d8a32f5a5b4f82d3be26020a36c
 folderAsset: yes
-timeCreated: 1489343473
+timeCreated: 1488138944
 =======
-<<<<<<< HEAD
 guid: 5a20eaa24290fc3489aa8bcf84c0ddab
 folderAsset: yes
 timeCreated: 1488336092
-=======
-guid: c1740a2cbd0b44641ae28efa7ba3ec00
-folderAsset: yes
-timeCreated: 1488920264
->>>>>>> master
 >>>>>>> master:Assets/ShaderForge.meta
 licenseType: Free
 DefaultImporter:

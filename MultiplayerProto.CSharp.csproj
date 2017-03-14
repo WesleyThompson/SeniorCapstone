@@ -94,10 +94,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\BraveToadStudio\Testing\Aubrey\DetectHazards.cs" />
+    <Compile Include="Assets\BraveToadStudio\Testing\Aubrey\Respawn.cs" />
+    <Compile Include="Assets\BraveToadStudio\Testing\Audrey\PlayerSizeScript.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Audrey\TimerScript.cs" />
+    <Compile Include="Assets\BraveToadStudio\Testing\Luke\Scripts\CameraFade.cs" />
+    <Compile Include="Assets\BraveToadStudio\Testing\Luke\Scripts\testPushBack.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\CameraController.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\CanvasManager.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\FollowPlayerRotate.cs" />
+    <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\GameCanvasManager.cs" />
+    <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\GameManager.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\LocalPlayerManager.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\MouseOrbitImproved.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\PlayerController.cs" />
