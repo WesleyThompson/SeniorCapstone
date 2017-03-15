@@ -12,6 +12,7 @@ public class RollableItem : MonoBehaviour {
                     if (t.gameObject.tag.Equals("ObjectLayer")) {
                         objectLayer = t.gameObject;
                     }
+
                 }
 
                 GetComponent<Collider>().enabled = false;
