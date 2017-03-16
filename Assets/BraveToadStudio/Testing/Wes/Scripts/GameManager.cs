@@ -59,6 +59,9 @@ public class GameManager : PunBehaviour {
     {
         Debug.Log("Match Started");
         players = GameObject.FindGameObjectsWithTag("Player");
+
+        //Set our penalty timer in case the player leaves
+        PlayerPrefs.SetFloat("penaltyTimer", 60f);
     }
 
     private void HandleMatchTimeOver(object sender, EventArgs e)
@@ -66,6 +69,9 @@ public class GameManager : PunBehaviour {
         Debug.Log("Match Concluded");
         DecideWinner();
         LoadMainMenu();
+
+        //Remove the penalty timer since the match concluded successfully
+        PlayerPrefs.SetFloat("penaltyTimer", 0f);
     }
 
     private void DecideWinner()
