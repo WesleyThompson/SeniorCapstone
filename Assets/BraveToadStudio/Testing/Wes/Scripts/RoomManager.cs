@@ -19,10 +19,8 @@ public class RoomManager : PunBehaviour {
 	}
 
     public override void OnJoinedRoom() {
-        Debug.Log("wassup fam");
         if (PhotonNetwork.isMasterClient)
         {
-            Debug.Log("wassup fam vol 2");
             if (PhotonNetwork.playerList.Length == PhotonNetwork.room.MaxPlayers) {
                 PhotonNetwork.LoadLevel(mainSceneName);
             }
