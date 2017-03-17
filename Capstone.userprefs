@@ -1,15 +1,12 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/BraveToadStudio/Testing/Wes/Scripts/LocalPlayerManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\BraveToadStudio\Testing\Audrey\ControllerVibrate.cs">
     <Files>
-<<<<<<< HEAD
-      <File FileName="Assets/BraveToadStudio/Testing/Wes/Scripts/LocalPlayerManager.cs" Line="33" Column="1" />
-      <File FileName="Assets/LeaveMatch.cs" Line="1" Column="1" />
-=======
-      <File FileName="Assets\BraveToadStudio\Testing\Wes\Scripts\PlayerController.cs" Line="278" Column="1" />
-      <File FileName="Assets\BraveToadStudio\Testing\Luke\Scripts\testPushBack.cs" Line="1" Column="1" />
-      <File FileName="Assets\BraveToadStudio\Testing\Luke\Scripts\CameraFade.cs" Line="1" Column="1" />
->>>>>>> master
+      <File FileName="Assets\BraveToadStudio\Testing\Wes\Scripts\PlayerController.cs" Line="1" Column="1" />
+      <File FileName="Assets\BraveToadStudio\Testing\Luke\Scripts\testPushBack.cs" Line="22" Column="4" />
+      <File FileName="Assets\BraveToadStudio\Testing\Audrey\ControllerVibrate.cs" Line="4" Column="7" />
+      <File FileName="Assets\XInputDotNet\XInputTestCS.cs" Line="4" Column="42" />
+      <File FileName="Assets\XInputDotNet\MITLicense.txt" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
