@@ -97,10 +97,10 @@ public class GameManager : PunBehaviour {
         {
             PhotonNetwork.DestroyAll();
         }
-        PhotonNetwork.LeaveRoom();
+        PhotonNetwork.Disconnect();
     }
 
-    public override void OnLeftRoom()
+    public override void OnDisconnectedFromPhoton()
     {
         PhotonNetwork.LoadLevel("Main Menu");
     }

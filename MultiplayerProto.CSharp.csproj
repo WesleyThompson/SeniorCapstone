@@ -52,9 +52,6 @@
     <Reference Include="UnityEngine">
       <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Advertisements">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Advertisements.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
@@ -70,9 +67,6 @@
     <Reference Include="UnityEngine.HoloLens">
       <HintPath>Library\UnityAssemblies\UnityEngine.HoloLens.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Purchasing">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Purchasing.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.VR">
       <HintPath>Library\UnityAssemblies\UnityEngine.VR.dll</HintPath>
     </Reference>
@@ -85,6 +79,9 @@
     <Reference Include="websocket-sharp">
       <HintPath>Assets\Plugins\WebSocket\websocket-sharp.dll</HintPath>
     </Reference>
+    <Reference Include="XInputDotNetPure">
+      <HintPath>Assets\Plugins\x86_64\XInputDotNetPure.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="MultiplayerProto.CSharp.Plugins.csproj">
@@ -95,7 +92,9 @@
   <ItemGroup>
     <Compile Include="Assets\BraveToadStudio\Testing\Aubrey\DetectHazards.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Aubrey\Respawn.cs" />
+    <Compile Include="Assets\BraveToadStudio\Testing\Audrey\ControllerVibrate.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Audrey\PlayerSizeScript.cs" />
+    <Compile Include="Assets\BraveToadStudio\Testing\Audrey\Test.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Audrey\TimerScript.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Luke\Scripts\CameraFade.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Luke\Scripts\testPushBack.cs" />
@@ -271,6 +270,7 @@
     <Compile Include="Assets\PhotonChatApi\ChatUserStatus.cs" />
     <Compile Include="Assets\PhotonChatApi\IChatClientListener.cs" />
     <Compile Include="Assets\SettingsMenu.cs" />
+    <Compile Include="Assets\XInputDotNet\Examples\XInputTestCS.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Art Assets\Exported Assets\Character test shader v5.shader" />
@@ -360,6 +360,7 @@
     <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonBasicOutline.shader" />
     <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonLit.shader" />
     <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonLitOutline.shader" />
+    <None Include="Assets\XInputDotNet\MITLicense.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
