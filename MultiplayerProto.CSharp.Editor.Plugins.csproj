@@ -127,6 +127,12 @@
     <Reference Include="websocket-sharp">
       <HintPath>Assets\Plugins\WebSocket\websocket-sharp.dll</HintPath>
     </Reference>
+<<<<<<< HEAD
+    <Reference Include="XInputDotNetPure">
+      <HintPath>Assets\Plugins\x86_64\XInputDotNetPure.dll</HintPath>
+    </Reference>
+=======
+>>>>>>> master
     <Reference Include="ShaderForge">
       <HintPath>Assets\ShaderForge\Editor\ShaderForge.dll</HintPath>
     </Reference>

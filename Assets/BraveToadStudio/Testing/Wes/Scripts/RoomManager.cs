@@ -18,7 +18,7 @@ public class RoomManager : PunBehaviour {
 		
 	}
 
-    public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer) {
+    public override void OnJoinedRoom() {
         if (PhotonNetwork.isMasterClient)
         {
             if (PhotonNetwork.playerList.Length == PhotonNetwork.room.MaxPlayers) {
