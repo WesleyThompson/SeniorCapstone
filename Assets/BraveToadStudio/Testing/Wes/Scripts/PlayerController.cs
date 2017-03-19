@@ -17,7 +17,6 @@ public class PlayerController : Photon.PunBehaviour {
 	[Range(0,1)]
 	public float slowRate;
 
-    
     public float fallingSlowRate = 1;
 	public float stopThreshold;
 
