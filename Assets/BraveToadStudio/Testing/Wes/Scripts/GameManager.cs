@@ -24,7 +24,6 @@ public class GameManager : PunBehaviour {
 	
 	void Update ()
     {
-        //TODO replace some of this mess with some sweet event driven stuff
         if (timer == null)
         {
             if(gcManager.timer != null)
@@ -38,7 +37,7 @@ public class GameManager : PunBehaviour {
     private void LoadWinScene() {
         if(PhotonNetwork.isMasterClient)
         {
-            PhotonNetwork.LoadLevel("Main Menu");
+            PhotonNetwork.LoadLevel("LobbyIslandForreal");
         }
     }
 
@@ -60,12 +59,19 @@ public class GameManager : PunBehaviour {
     {
         Debug.Log("Match Started");
         players = GameObject.FindGameObjectsWithTag("Player");
+
+        //Set our penalty timer in case the player leaves
+        PlayerPrefs.SetFloat("penaltyTimer", 60f);
     }
 
     private void HandleMatchTimeOver(object sender, EventArgs e)
     {
         Debug.Log("Match Concluded");
         DecideWinner();
+        LoadMainMenu();
+
+        //Remove the penalty timer since the match concluded successfully
+        PlayerPrefs.SetFloat("penaltyTimer", 0f);
     }
 
     private void DecideWinner()
@@ -83,5 +89,19 @@ public class GameManager : PunBehaviour {
         }
 
         Debug.Log("The winner is " + currentMaxPlayer.name + " with a diameter of " + maxScale + " meters");
+    }
+
+    private void LoadMainMenu()
+    {
+        if (PhotonNetwork.isMasterClient)
+        {
+            PhotonNetwork.DestroyAll();
+        }
+        PhotonNetwork.Disconnect();
+    }
+
+    public override void OnDisconnectedFromPhoton()
+    {
+        PhotonNetwork.LoadLevel("Main Menu");
     }
 }
