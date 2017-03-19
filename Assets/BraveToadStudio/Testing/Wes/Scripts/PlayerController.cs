@@ -200,9 +200,9 @@ public class PlayerController : Photon.PunBehaviour {
 		else //collision with untagged objects player can't pickup play'audioGround'
 			playSound (other, audioGround);
 			
-		double minSplatVelocity = 1.5 ;
-		if(rb.velocity.magnitude >= minSplatVelocity) //&& other.gameObject.tag != "Ground") //TODO, make a "Ground" tag to avoid random collision executions on the ground planes
-		{//if player is going fast
+		//double minSplatVelocity = 1.5 ;
+		//if(rb.velocity.magnitude >= minSplatVelocity) //&& other.gameObject.tag != "Ground") //TODO, make a "Ground" tag to avoid random collision executions on the ground planes
+		//{//if player is going fast
 			foreach(ContactPoint contact in other.contacts)
 			{//instantiate splat prefab and attach splatController script onto it
 				Debug.Log("hit " + other.gameObject.name) ;
@@ -210,7 +210,7 @@ public class PlayerController : Photon.PunBehaviour {
 				//GameObject splat = Instantiate(splatPrefab, contact.point, Quaternion.FromToRotation(Vector3.up, contact.normal)) ;
 				splat.AddComponent<splatController>() ;
 			}
-		}
+		//}
 	}
 
 	private void CollidedIntoPlayer(Collision other){
