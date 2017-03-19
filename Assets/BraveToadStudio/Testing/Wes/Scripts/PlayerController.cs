@@ -12,7 +12,10 @@ public class PlayerController : Photon.PunBehaviour {
 	private PhotonView parentPhotonView;
 	private PhotonTransformView transformView;
 	public GameObject objLayer;
-
+	
+	//public Transform splatPrefab ; //for when we use PhotonNetwork.Instantiate
+	public GameObject splatPrefab ;
+	
 	public float speed;
 	[Range(0,1)]
 	public float slowRate;
@@ -59,7 +62,7 @@ public class PlayerController : Photon.PunBehaviour {
 	AudioSource audioGround;
 
 	void Start () {
-		rb = GetComponent<Rigidbody>();
+		rb = GetComponent<Rigidbody>(); //get rigid body of player this script is attached to
 
 		AudioSource[] audios = GetComponents<AudioSource> ();
 		audioNonPickups = audios [0];
@@ -68,9 +71,10 @@ public class PlayerController : Photon.PunBehaviour {
 
 		parentPhotonView = GetComponentInParent<PhotonView>();
 		transformView = GetComponent<PhotonTransformView>();
+		
+		splatPrefab = (GameObject)Resources.Load("splatPrefab") ;//NOTE: the splatPrefab must be located in the Resources folder for this to work
 
 		sizeTarget = transform.localScale;
-		Debug.Log("Size " + sizeTarget);
 	}
 		
 	void FixedUpdate () {
@@ -164,6 +168,8 @@ public class PlayerController : Photon.PunBehaviour {
 			CollidedIntoPlayer (other);
 		else if (other.gameObject.tag.Equals ("Pickup") && colliderSize.magnitude <= playerSize)//collided into an obj that must be picked up
 			CollidedIntoPickup (other, colliderSize);
+		else if(other.gameObject.tag.Equals("Pickup") && colliderSize.magnitude > playerSize) //collided into pickup too big to pickup
+			CollidedIntoNonPickup(other) ; //call nonpickup collision method
 		else
 			CollidedIntoNonPickup (other);//collided into an obj that cannot be picked up
 	}
@@ -192,11 +198,22 @@ public class PlayerController : Photon.PunBehaviour {
 			playSound(other, audioNonPickups);
 		else //collision with untagged objects player can't pickup play'audioGround'
 			playSound (other, audioGround);
+			
+		//double minSplatVelocity = 1.5 ;
+		//if(rb.velocity.magnitude >= minSplatVelocity) //&& other.gameObject.tag != "Ground") //TODO, make a "Ground" tag to avoid random collision executions on the ground planes
+		//{//if player is going fast
+			foreach(ContactPoint contact in other.contacts)
+			{//instantiate splat prefab and attach splatController script onto it
+				Debug.Log("hit " + other.gameObject.name) ;
+				GameObject splat = PhotonNetwork.Instantiate("splatPrefab", contact.point, Quaternion.FromToRotation(Vector3.up, contact.normal), 0) ;
+				//GameObject splat = Instantiate(splatPrefab, contact.point, Quaternion.FromToRotation(Vector3.up, contact.normal)) ;
+				splat.AddComponent<splatController>() ;
+			}
+		//}
 	}
 
 	private void CollidedIntoPlayer(Collision other){
-
-		Debug.Log ("velocity on collision with palyer is " + rb.velocity.magnitude);
+		//Debug.Log ("velocity on collision with player is " + rb.velocity.magnitude);
 		//PlayerPushPlayer Implementation
 		float otherPlayerVelocity = other.relativeVelocity.magnitude - rb.velocity.magnitude;
 		if (otherPlayerVelocity > pushbackThresholdVelocity) {//then THIS player needs to be pushed back
@@ -207,7 +224,7 @@ public class PlayerController : Photon.PunBehaviour {
 		}
 	
 		//TODO steal mechanic implementation
-		bool stealCondition = false;//some condition will allow this player to steal from another
+		bool stealCondition = true;//some condition will allow this player to steal from another
 		if (stealCondition)
 			Steal (other);
 	}
@@ -223,16 +240,25 @@ public class PlayerController : Photon.PunBehaviour {
 		}
 	}
 
+
 	private Vector3 ConvertVectorToDisplacement(Vector3 size) {
 		float total = size.x + size.y + size.z;
 		total = total / 3;
 
-		float currentVolume = (4f / 3f) * Mathf.PI * Mathf.Pow(transform.localScale.x / 2, 3f);
+		Debug.Log ("total is " + total);
+		//Debug.Log ("hell" + Mathf. (transform.localScale.x / 2, 3f));
+
+
+		float currentVolume;
+		currentVolume = (4f / 3f) * Mathf.PI * Mathf.Pow(transform.localScale.x / 2, 3f);
+
 		currentVolume += total;
+
+
 		Debug.Log("CurrVol: " + currentVolume);
 
 		float radius = Mathf.Pow( (3f/4f) * (currentVolume / Mathf.PI), 1f/3f);
-		Debug.Log("New Radius " + radius);
+		//Debug.Log("New Radius " + radius);
 		float diameter = radius * 2.25f;
 
 		Vector3 newBounds = new Vector3(diameter, diameter, diameter);
@@ -243,35 +269,41 @@ public class PlayerController : Photon.PunBehaviour {
 	}
 		
 	//TODO Steal
-	public float minSize = 1;//can't steal from another player with a minimun size 
-	public float stealMagnitude = 1;//size that is stolen...
+
+	public float percentToSteal = (float)0.5;
 	private void Steal(Collision other){
 		Vector3 otherPlayerSize = other.collider.bounds.size;
-		if (otherPlayerSize.magnitude > minSize) {//Can steal
+		float playerSize = GetComponent<Collider> ().bounds.size.magnitude;
+
+		if (playerSize < otherPlayerSize.magnitude ) {//THIS player can steal from OTHER player
+			//Debug.Log("In if in player script");
+
 
 			//need some size to steal
 			Vector3 stealSize = otherPlayerSize;
+			Vector3 originalOtherSize = otherPlayerSize;
 			stealSize.Normalize ();
-			/*TODO
-				steal size could be determined by the size of who the player steals from
-				ex. steal a larger amount from a large player 
-					and steal a samller amount from a small player
 
-				or steal size could be standard
-				ex. steal the same amount of size whether stealling from a large or small player
-			*/
-			Vector3 stealSizeScaler = new Vector3 (stealMagnitude,stealMagnitude, stealMagnitude);
-			stealSize.Scale (stealSizeScaler);
+			//take from other
+			float percentToDecrease = originalOtherSize.magnitude * (1 - percentToSteal);
 
+			Vector3 stealSizeForOther = otherPlayerSize;
+			stealSizeForOther.Normalize ();
+			stealSizeForOther.Scale (new Vector3 (percentToDecrease,percentToDecrease, percentToDecrease));
 
-			//TODO 
 			//take the size away from the other player
+			//other.collider.GetComponent<PlayerController> ().changeSize(stealSizeForOther);
+			other.collider.GetComponent<testPushBack>().changeSize(stealSizeForOther);
 
-			//add the size to this player
-			sizeTarget = ConvertVectorToDisplacement (stealSize);
+			float differnceInSizeBeforeSteal = originalOtherSize.magnitude - stealSizeForOther.magnitude;
+			float growByThis = playerSize + differnceInSizeBeforeSteal;
 
-			//TODO
-			//Animation of this mechanic
+			//grow self
+			stealSize.Scale (new Vector3 (growByThis,growByThis, growByThis));
+			changeSize (stealSize);
 		}
+	}
+	public void changeSize(Vector3 newSizeTarget){
+		sizeTarget = newSizeTarget;
 	}
 }
