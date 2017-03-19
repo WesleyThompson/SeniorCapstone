@@ -19,6 +19,8 @@ public class PlayerController : Photon.PunBehaviour {
 	public float speed;
 	[Range(0,1)]
 	public float slowRate;
+
+    public float fallingSlowRate = 1;
 	public float stopThreshold;
 
 	public float maxVelocity = 0;
@@ -76,14 +78,17 @@ public class PlayerController : Photon.PunBehaviour {
 
 		sizeTarget = transform.localScale;
 	}
-		
+
+    public float speedyFall = (float)0.95;
 	void FixedUpdate () {
+
 		if (parentPhotonView.isMine){ //Make sure this is our player before controlling
 			
 			// Using this allows us to get cross-platform input
 			float horizontal = Input.GetAxis("Horizontal");
 			float vertical = Input.GetAxis("Vertical");
 			Vector3 targetDirection = new Vector3(horizontal, 0.0f, vertical);
+
 
 			// Adjust the target direction based on the direction the camera is facing
 			targetDirection = Camera.main.transform.TransformDirection(targetDirection);
@@ -102,8 +107,17 @@ public class PlayerController : Photon.PunBehaviour {
 			//     since they are analog. Need to add "Dead-Zone" aka a range of values that are close
 			//     enough to 0 to call it 0.
 			if (horizontal == 0f && vertical == 0f){
-				rb.velocity *= slowRate;
-				rb.angularVelocity *= slowRate;
+
+                //fix player falling issue players fall faster
+                if(rb.velocity.y < 0){
+                    rb.velocity *= fallingSlowRate;
+                    rb.angularVelocity *= fallingSlowRate;
+                }
+                else{
+                    rb.velocity *= slowRate;
+                    rb.angularVelocity *= slowRate;
+                }
+
 			}
 
 			//Size stuff
@@ -113,6 +127,18 @@ public class PlayerController : Photon.PunBehaviour {
 			}
 		}
 	}
+
+
+
+
+
+
+
+
+
+
+
+
 
 	private void Boost(Vector3 targetDirection){
 		//player is using an xboxController 
