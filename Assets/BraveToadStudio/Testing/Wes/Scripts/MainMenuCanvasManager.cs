@@ -14,7 +14,6 @@ public class MainMenuCanvasManager : MonoBehaviour {
         Debug.Log("Penalty Timer:" + penaltyTime);
 	}
 	
-	// Update is called once per frame
 	void Update () {
         penaltyTime = PlayerPrefs.GetFloat("penaltyTimer");
         Debug.Log(penaltyTime);
