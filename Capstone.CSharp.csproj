@@ -91,19 +91,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\BraveToadStudio\Testing\Aubrey\DetectHazards.cs" />
-<<<<<<< HEAD
-    <Compile Include="Assets\BraveToadStudio\Testing\Audrey\ControllerVibrate.cs" />
-=======
     <Compile Include="Assets\BraveToadStudio\Testing\Aubrey\Respawn.cs" />
->>>>>>> master
+    <Compile Include="Assets\BraveToadStudio\Testing\Audrey\ControllerVibrate.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Audrey\PlayerSizeScript.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Audrey\Test.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Audrey\TimerScript.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Luke\Scripts\CameraFade.cs" />
-<<<<<<< HEAD
-=======
     <Compile Include="Assets\BraveToadStudio\Testing\Luke\Scripts\testPushBack.cs" />
->>>>>>> master
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\CameraController.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\CanvasManager.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\FollowPlayerRotate.cs" />
