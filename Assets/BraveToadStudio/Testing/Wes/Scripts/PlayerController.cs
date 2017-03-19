@@ -12,7 +12,10 @@ public class PlayerController : Photon.PunBehaviour {
 	private PhotonView parentPhotonView;
 	private PhotonTransformView transformView;
 	public GameObject objLayer;
-
+	
+	//public Transform splatPrefab ; //for when we use PhotonNetwork.Instantiate
+	public GameObject splatPrefab ;
+	
 	public float speed;
 	[Range(0,1)]
 	public float slowRate;
@@ -59,7 +62,7 @@ public class PlayerController : Photon.PunBehaviour {
 	AudioSource audioGround;
 
 	void Start () {
-		rb = GetComponent<Rigidbody>();
+		rb = GetComponent<Rigidbody>(); //get rigid body of player this script is attached to
 
 		AudioSource[] audios = GetComponents<AudioSource> ();
 		audioNonPickups = audios [0];
@@ -68,6 +71,8 @@ public class PlayerController : Photon.PunBehaviour {
 
 		parentPhotonView = GetComponentInParent<PhotonView>();
 		transformView = GetComponent<PhotonTransformView>();
+		
+		splatPrefab = (GameObject)Resources.Load("splatPrefab") ;//NOTE: the splatPrefab must be located in the Resources folder for this to work
 
 		sizeTarget = transform.localScale;
 	}
@@ -163,6 +168,8 @@ public class PlayerController : Photon.PunBehaviour {
 			CollidedIntoPlayer (other);
 		else if (other.gameObject.tag.Equals ("Pickup") && colliderSize.magnitude <= playerSize)//collided into an obj that must be picked up
 			CollidedIntoPickup (other, colliderSize);
+		else if(other.gameObject.tag.Equals("Pickup") && colliderSize.magnitude > playerSize) //collided into pickup too big to pickup
+			CollidedIntoNonPickup(other) ; //call nonpickup collision method
 		else
 			CollidedIntoNonPickup (other);//collided into an obj that cannot be picked up
 	}
@@ -191,6 +198,18 @@ public class PlayerController : Photon.PunBehaviour {
 			playSound(other, audioNonPickups);
 		else //collision with untagged objects player can't pickup play'audioGround'
 			playSound (other, audioGround);
+			
+		//double minSplatVelocity = 1.5 ;
+		//if(rb.velocity.magnitude >= minSplatVelocity) //&& other.gameObject.tag != "Ground") //TODO, make a "Ground" tag to avoid random collision executions on the ground planes
+		//{//if player is going fast
+			foreach(ContactPoint contact in other.contacts)
+			{//instantiate splat prefab and attach splatController script onto it
+				Debug.Log("hit " + other.gameObject.name) ;
+				GameObject splat = PhotonNetwork.Instantiate("splatPrefab", contact.point, Quaternion.FromToRotation(Vector3.up, contact.normal), 0) ;
+				//GameObject splat = Instantiate(splatPrefab, contact.point, Quaternion.FromToRotation(Vector3.up, contact.normal)) ;
+				splat.AddComponent<splatController>() ;
+			}
+		//}
 	}
 
 	private void CollidedIntoPlayer(Collision other){
