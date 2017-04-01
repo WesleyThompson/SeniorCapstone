@@ -17,10 +17,10 @@ public class MainMenuCanvasManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         penaltyTime = PlayerPrefs.GetFloat("penaltyTimer");
-        Debug.Log(penaltyTime);
 
         if (penaltyTime > 0)
         {
+            //TODO add visual UI element for penalty time
             penaltyTime -= Time.deltaTime;
             PlayerPrefs.SetFloat("penaltyTimer", penaltyTime);
 
