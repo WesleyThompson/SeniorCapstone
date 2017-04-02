@@ -20,7 +20,7 @@ public class NewBehaviourScript : PunBehaviour
 
 	void OnPhotonMaxCccuReached() 
 	{
-		SceneManager.LoadScene("Main Menu") ;
 		PlayerPrefs.SetInt("maxccu",1) ;
+		SceneManager.LoadScene("Main Menu") ;
 	}
 }

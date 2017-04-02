@@ -1,16 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections ;
+using System.Collections.Generic ;
+using UnityEngine ;
+using UnityEngine.SceneManagement ;
+using UnityEngine.UI ;
 
-public class errorPopupController : MonoBehaviour {
+public class errorPopupController : MonoBehaviour
+{
+	public Button errorPopup ;
 
-	// Use this for initialization
-	void Start () {
-		
+	void Start ()
+	{
+		errorPopup.gameObject.SetActive(false) ;
+		errorPopup.GetComponent<Button>().onClick.AddListener (closePopup);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+	void Update () {}
+
+	public void closePopup()
+	{
+		errorPopup.gameObject.SetActive(false) ;
 	}
 }

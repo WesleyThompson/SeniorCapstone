@@ -29,6 +29,8 @@ public class MainMenuGlobal : MonoBehaviour
 
 	public Text creditText ;
 	public GameObject settingsPanel ;
+
+	public Button errorPopup ;
 	
 	void Start ()
 	{//when init scene, add onclick events for all main menu buttons: play, settings, credits, exit
@@ -43,6 +45,14 @@ public class MainMenuGlobal : MonoBehaviour
 		settingsPanel.gameObject.SetActive(false) ;
 
 		this.currentMenuItems = this.getAllMenuItems() ;
+
+		if (PlayerPrefs.GetInt ("maxccu") == 1)
+		{
+			errorPopup.gameObject.SetActive (true);
+			PlayerPrefs.SetInt ("maxccu",0);
+		}
+		
+			
 	}
 	
 	void Update () {}
