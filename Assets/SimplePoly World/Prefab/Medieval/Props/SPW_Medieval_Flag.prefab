@@ -10,9 +10,10 @@ GameObject:
   - component: {fileID: 438590}
   - component: {fileID: 3353612}
   - component: {fileID: 2315918}
+  - component: {fileID: 64267475029844490}
   m_Layer: 0
   m_Name: SPW_Medieval_Flag
-  m_TagString: Untagged
+  m_TagString: Pickup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -79,3 +80,17 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 150946}
   m_IsPrefabParent: 1
+--- !u!64 &64267475029844490
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 150946}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: 6edc49c0433604f4d80795fcc384f04a, type: 3}

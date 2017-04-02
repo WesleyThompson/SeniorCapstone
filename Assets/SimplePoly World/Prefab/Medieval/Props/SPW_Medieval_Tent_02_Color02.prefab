@@ -10,9 +10,10 @@ GameObject:
   - component: {fileID: 467664}
   - component: {fileID: 3352910}
   - component: {fileID: 2368146}
+  - component: {fileID: 64133568727418264}
   m_Layer: 0
   m_Name: SPW_Medieval_Tent_02_Color02
-  m_TagString: Untagged
+  m_TagString: Pickup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -79,3 +80,17 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 122524}
   m_IsPrefabParent: 1
+--- !u!64 &64133568727418264
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 122524}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: cd09c84e4c2f63d46b790065c7d961e7, type: 3}

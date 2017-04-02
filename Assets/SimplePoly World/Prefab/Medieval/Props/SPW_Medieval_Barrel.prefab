@@ -10,9 +10,10 @@ GameObject:
   - component: {fileID: 488330}
   - component: {fileID: 3381040}
   - component: {fileID: 2341396}
+  - component: {fileID: 64627557682454414}
   m_Layer: 0
   m_Name: SPW_Medieval_Barrel
-  m_TagString: Untagged
+  m_TagString: Pickup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -79,3 +80,17 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 165788}
   m_IsPrefabParent: 1
+--- !u!64 &64627557682454414
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 165788}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: 1da500eb3f5922c42bcb1dff3231c5d7, type: 3}

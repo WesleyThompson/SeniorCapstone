@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2338264}
   m_Layer: 0
   m_Name: SPW_Natures_Stone_05
-  m_TagString: Untagged
+  m_TagString: Pickup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

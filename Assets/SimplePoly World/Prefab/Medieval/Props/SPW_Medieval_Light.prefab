@@ -10,9 +10,10 @@ GameObject:
   - component: {fileID: 481782}
   - component: {fileID: 3354676}
   - component: {fileID: 2367932}
+  - component: {fileID: 64518693602591780}
   m_Layer: 0
   m_Name: SPW_Medieval_Light
-  m_TagString: Untagged
+  m_TagString: Pickup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -79,3 +80,17 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 163450}
   m_IsPrefabParent: 1
+--- !u!64 &64518693602591780
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 163450}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: 0b17af1ee12f12f42a428c7def17f4f8, type: 3}

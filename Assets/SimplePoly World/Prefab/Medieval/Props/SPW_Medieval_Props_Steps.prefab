@@ -10,9 +10,10 @@ GameObject:
   - component: {fileID: 421282}
   - component: {fileID: 3333168}
   - component: {fileID: 2332948}
+  - component: {fileID: 64401756147592626}
   m_Layer: 0
   m_Name: SPW_Medieval_Props_Steps
-  m_TagString: Untagged
+  m_TagString: Pickup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -79,3 +80,17 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 188060}
   m_IsPrefabParent: 1
+--- !u!64 &64401756147592626
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 188060}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: 6361753b9ddf83241b95e286ff367c99, type: 3}
