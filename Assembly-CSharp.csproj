@@ -55,6 +55,8 @@
      <Compile Include="Assets\BraveToadStudio\Testing\Chadwick\MainMenuGlobal.cs" />
      <Compile Include="Assets\BraveToadStudio\Testing\Chadwick\OverheadDisplay\OverheadDisplayManager.cs" />
      <Compile Include="Assets\BraveToadStudio\Testing\Chadwick\leaveSplatOnCollide\splatController.cs" />
+     <Compile Include="Assets\BraveToadStudio\Testing\Chadwick\loadingAnimation_errorDisplay\MaxCCUDetector.cs" />
+     <Compile Include="Assets\BraveToadStudio\Testing\Chadwick\loadingAnimation_errorDisplay\errorPopupController.cs" />
      <Compile Include="Assets\BraveToadStudio\Testing\Luke\Scripts\CameraFade.cs" />
      <Compile Include="Assets\BraveToadStudio\Testing\Luke\Scripts\testPushBack.cs" />
      <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\CameraController.cs" />
