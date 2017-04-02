@@ -8,17 +8,8 @@ using UnityEngine.SceneManagement ;
 public class NewBehaviourScript : PunBehaviour
 {
 	public GameObject errorPopup ;
-	void Start()
-	{
 
-	}
-
-	void Update()
-	{
-
-	}
-
-	void OnPhotonMaxCccuReached() 
+	override public void OnPhotonMaxCccuReached() 
 	{
 		PlayerPrefs.SetInt("maxccu",1) ;
 		SceneManager.LoadScene("Main Menu") ;

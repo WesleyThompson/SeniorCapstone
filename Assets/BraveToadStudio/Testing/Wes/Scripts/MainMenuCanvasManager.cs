@@ -9,10 +9,6 @@ public class MainMenuCanvasManager : MonoBehaviour {
 
     private bool playButtonActive = true;
 	void Start () {
-
-		if(PlayerPrefs != null && PlayerPrefs.GetInt("maxccu") == 1)
-			//make popup saying max ccu has been reached
-
         mmg = GetComponentInChildren<MainMenuGlobal>();
         
         Debug.Log("Penalty Timer:" + penaltyTime);

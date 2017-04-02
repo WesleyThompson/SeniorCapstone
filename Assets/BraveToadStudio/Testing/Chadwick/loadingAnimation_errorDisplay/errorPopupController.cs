@@ -10,7 +10,6 @@ public class errorPopupController : MonoBehaviour
 
 	void Start ()
 	{
-		errorPopup.gameObject.SetActive(false) ;
 		errorPopup.GetComponent<Button>().onClick.AddListener (closePopup);
 	}
 
