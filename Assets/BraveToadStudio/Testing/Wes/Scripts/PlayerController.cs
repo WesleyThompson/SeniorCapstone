@@ -1,6 +1,7 @@
 using UnityEngine;
 using Photon;
 using System.Collections;
+using System;
 
 // Notes:
 // This script must be attached to the rigidbody of the player's ball.
@@ -317,10 +318,16 @@ public class PlayerController : Photon.PunBehaviour {
 			stealSizeForOther.Normalize ();
 			stealSizeForOther.Scale (new Vector3 (percentToDecrease,percentToDecrease, percentToDecrease));
 
-			//take the size away from the other player
-			//other.collider.GetComponent<PlayerController> ().changeSize(stealSizeForOther);
-			other.collider.GetComponent<testPushBack>().changeSize(stealSizeForOther);
-
+            //take the size away from the other player
+            //other.collider.GetComponent<PlayerController> ().changeSize(stealSizeForOther);
+            try
+            {
+                other.collider.GetComponent<testPushBack>().changeSize(stealSizeForOther);
+            } 
+            catch(Exception e)
+            {
+                Debug.LogWarning(e.Message);
+            }
 			float differnceInSizeBeforeSteal = originalOtherSize.magnitude - stealSizeForOther.magnitude;
 			float growByThis = playerSize + differnceInSizeBeforeSteal;
 
