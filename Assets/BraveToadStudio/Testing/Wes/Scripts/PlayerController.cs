@@ -286,7 +286,7 @@ public class PlayerController : Photon.PunBehaviour {
 
 		float radius = Mathf.Pow( (3f/4f) * (currentVolume / Mathf.PI), 1f/3f);
 		//Debug.Log("New Radius " + radius);
-		float diameter = radius * 2.25f;
+		float diameter = radius * 2f;
 
 		Vector3 newBounds = new Vector3(diameter, diameter, diameter);
 
