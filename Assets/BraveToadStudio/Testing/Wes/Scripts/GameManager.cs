@@ -102,7 +102,7 @@ public class GameManager : PunBehaviour {
     {
         if (PhotonNetwork.isMasterClient)
         {
-            PhotonNetwork.DestroyAll();
+            PhotonNetwork.DestroyImmediate();
         }
         PhotonNetwork.Disconnect();
     }
