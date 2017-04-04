@@ -80,7 +80,7 @@ public class PlayerController : Photon.PunBehaviour {
 	}
 
     public float speedyFall = (float)0.95;
-	void FixedUpdate () {
+    void FixedUpdate () {
 
 		if (parentPhotonView.isMine){ //Make sure this is our player before controlling
 			
@@ -117,26 +117,15 @@ public class PlayerController : Photon.PunBehaviour {
                     rb.velocity *= slowRate;
                     rb.angularVelocity *= slowRate;
                 }
-
 			}
 
-			//Size stuff
+            //Size stuff			
 			if (!transform.localScale.Equals(sizeTarget)) {
 				float delta = Time.deltaTime * sizeLerpSpeed;
 				transform.localScale = Vector3.Lerp(transform.localScale, sizeTarget, delta);
 			}
 		}
 	}
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -238,6 +227,8 @@ public class PlayerController : Photon.PunBehaviour {
 		//}
 	}
 
+
+
 	private void CollidedIntoPlayer(Collision other){
 		//Debug.Log ("velocity on collision with player is " + rb.velocity.magnitude);
 		//PlayerPushPlayer Implementation
@@ -249,10 +240,16 @@ public class PlayerController : Photon.PunBehaviour {
 			BumpPlayer (force);
 		}
 	
-		//TODO steal mechanic implementation
+
+
+
+
 		bool stealCondition = true;//some condition will allow this player to steal from another
 		if (stealCondition)
 			Steal (other);
+
+
+
 	}
 
 	public void BumpPlayer(Vector3 magnitude){
@@ -293,17 +290,19 @@ public class PlayerController : Photon.PunBehaviour {
 
 		return newBounds;
 	}
-		
-	//TODO Steal
 
-	public float percentToSteal = (float)0.5;
+
+
+
+
+  
+	public float percentToSteal = (float)0.2;
 	private void Steal(Collision other){
 		Vector3 otherPlayerSize = other.collider.bounds.size;
 		float playerSize = GetComponent<Collider> ().bounds.size.magnitude;
 
 		if (playerSize < otherPlayerSize.magnitude ) {//THIS player can steal from OTHER player
 			//Debug.Log("In if in player script");
-
 
 			//need some size to steal
 			Vector3 stealSize = otherPlayerSize;
@@ -318,8 +317,7 @@ public class PlayerController : Photon.PunBehaviour {
 			stealSizeForOther.Scale (new Vector3 (percentToDecrease,percentToDecrease, percentToDecrease));
 
 			//take the size away from the other player
-			//other.collider.GetComponent<PlayerController> ().changeSize(stealSizeForOther);
-			other.collider.GetComponent<testPushBack>().changeSize(stealSizeForOther);
+			other.collider.GetComponent<PlayerController>().changeSize(stealSizeForOther);
 
 			float differnceInSizeBeforeSteal = originalOtherSize.magnitude - stealSizeForOther.magnitude;
 			float growByThis = playerSize + differnceInSizeBeforeSteal;
@@ -327,7 +325,7 @@ public class PlayerController : Photon.PunBehaviour {
 			//grow self
 			stealSize.Scale (new Vector3 (growByThis,growByThis, growByThis));
 			changeSize (stealSize);
-		}
+        }
 	}
 	public void changeSize(Vector3 newSizeTarget){
 		sizeTarget = newSizeTarget;
