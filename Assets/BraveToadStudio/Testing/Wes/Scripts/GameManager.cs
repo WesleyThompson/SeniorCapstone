@@ -26,13 +26,23 @@ public class GameManager : PunBehaviour {
     {
         if (timer == null)
         {
-            if(gcManager.timer != null)
+            try { 
+            if (gcManager.timer != null)
             {
                 timer = gcManager.timer;
                 TimerSetup();
             }
+            }
+            catch
+            {
+                Debug.Log("Catching an error");
+            }
+
         }
-	}
+        //testing
+       // if (PhotonNetwork.playerList.Length == 1)
+         //  LoadMainMenu();
+    }
 
     private void LoadWinScene() {
         if(PhotonNetwork.isMasterClient)
@@ -87,7 +97,6 @@ public class GameManager : PunBehaviour {
                 maxScale = player.transform.localScale.x;
             }
         }
-
         Debug.Log("The winner is " + currentMaxPlayer.name + " with a diameter of " + maxScale + " meters");
     }
 
@@ -103,5 +112,12 @@ public class GameManager : PunBehaviour {
     public override void OnDisconnectedFromPhoton()
     {
         PhotonNetwork.LoadLevel("Main Menu");
+    }
+
+    //called when a player other than self disconnects
+    public override void OnPhotonPlayerDisconnected(PhotonPlayer player)
+    {
+        if (PhotonNetwork.playerList.Length == 1)
+            LoadMainMenu();
     }
 }
