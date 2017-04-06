@@ -231,7 +231,7 @@ public class PlayerController : Photon.PunBehaviour {
 		//{//if player is going fast
 			foreach(ContactPoint contact in other.contacts)
 			{//instantiate splat prefab and attach splatController script onto it
-				Debug.Log("hit " + other.gameObject.name) ;
+				//Debug.Log("hit " + other.gameObject.name) ;
 				GameObject splat = PhotonNetwork.Instantiate("splatPrefab", contact.point, Quaternion.FromToRotation(Vector3.up, contact.normal), 0) ;
 				//GameObject splat = Instantiate(splatPrefab, contact.point, Quaternion.FromToRotation(Vector3.up, contact.normal)) ;
 				splat.AddComponent<splatController>() ;
