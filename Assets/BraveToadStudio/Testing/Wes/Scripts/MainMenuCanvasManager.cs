@@ -42,11 +42,11 @@ public class MainMenuCanvasManager : MonoBehaviour {
 
     private void deactivatePlayButton()
     {
-        mmg.playButton.enabled = false;
+        //mmg.playButton.enabled = false;
     }
 
     private void activatePlayButton()
     {
-        mmg.playButton.enabled = true;
+        //mmg.playButton.enabled = true;
     }
 }
