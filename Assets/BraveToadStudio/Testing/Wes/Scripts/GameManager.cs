@@ -89,6 +89,13 @@ public class GameManager : PunBehaviour {
         float maxScale = 0f;
         GameObject currentMaxPlayer = null;
         //TODO check for ties
+        List<GameObject> playerList = new List<GameObject>(players);
+        playerList.Sort((x, y) => x.transform.localScale.x.CompareTo(y.transform.localScale.x));
+        foreach(GameObject go in playerList)
+        {
+            Debug.Log(go.transform.localScale.x);
+        }
+
         foreach(GameObject player in players)
         {
             if(player.transform.localScale.x > maxScale)

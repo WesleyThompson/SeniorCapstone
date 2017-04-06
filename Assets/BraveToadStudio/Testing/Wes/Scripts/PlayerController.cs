@@ -1,6 +1,7 @@
 using UnityEngine;
 using Photon;
 using System.Collections;
+using System;
 
 // Notes:
 // This script must be attached to the rigidbody of the player's ball.
@@ -80,7 +81,7 @@ public class PlayerController : Photon.PunBehaviour {
 	}
 
     public float speedyFall = (float)0.95;
-    void FixedUpdate () {
+	void FixedUpdate () {
 
 		if (parentPhotonView.isMine){ //Make sure this is our player before controlling
 			
@@ -117,15 +118,26 @@ public class PlayerController : Photon.PunBehaviour {
                     rb.velocity *= slowRate;
                     rb.angularVelocity *= slowRate;
                 }
+
 			}
 
-            //Size stuff			
+			//Size stuff
 			if (!transform.localScale.Equals(sizeTarget)) {
 				float delta = Time.deltaTime * sizeLerpSpeed;
 				transform.localScale = Vector3.Lerp(transform.localScale, sizeTarget, delta);
 			}
 		}
 	}
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -219,15 +231,13 @@ public class PlayerController : Photon.PunBehaviour {
 		//{//if player is going fast
 			foreach(ContactPoint contact in other.contacts)
 			{//instantiate splat prefab and attach splatController script onto it
-				Debug.Log("hit " + other.gameObject.name) ;
+				//Debug.Log("hit " + other.gameObject.name) ;
 				GameObject splat = PhotonNetwork.Instantiate("splatPrefab", contact.point, Quaternion.FromToRotation(Vector3.up, contact.normal), 0) ;
 				//GameObject splat = Instantiate(splatPrefab, contact.point, Quaternion.FromToRotation(Vector3.up, contact.normal)) ;
 				splat.AddComponent<splatController>() ;
 			}
 		//}
 	}
-
-
 
 	private void CollidedIntoPlayer(Collision other){
 		//Debug.Log ("velocity on collision with player is " + rb.velocity.magnitude);
@@ -240,16 +250,10 @@ public class PlayerController : Photon.PunBehaviour {
 			BumpPlayer (force);
 		}
 	
-
-
-
-
+		//TODO steal mechanic implementation
 		bool stealCondition = true;//some condition will allow this player to steal from another
 		if (stealCondition)
 			Steal (other);
-
-
-
 	}
 
 	public void BumpPlayer(Vector3 magnitude){
@@ -282,7 +286,7 @@ public class PlayerController : Photon.PunBehaviour {
 
 		float radius = Mathf.Pow( (3f/4f) * (currentVolume / Mathf.PI), 1f/3f);
 		//Debug.Log("New Radius " + radius);
-		float diameter = radius * 2.25f;
+		float diameter = radius * 2f;
 
 		Vector3 newBounds = new Vector3(diameter, diameter, diameter);
 
@@ -290,19 +294,17 @@ public class PlayerController : Photon.PunBehaviour {
 
 		return newBounds;
 	}
+		
+	//TODO Steal
 
-
-
-
-
-  
-	public float percentToSteal = (float)0.2;
+	public float percentToSteal = (float)0.5;
 	private void Steal(Collision other){
 		Vector3 otherPlayerSize = other.collider.bounds.size;
 		float playerSize = GetComponent<Collider> ().bounds.size.magnitude;
 
 		if (playerSize < otherPlayerSize.magnitude ) {//THIS player can steal from OTHER player
 			//Debug.Log("In if in player script");
+
 
 			//need some size to steal
 			Vector3 stealSize = otherPlayerSize;
@@ -316,16 +318,23 @@ public class PlayerController : Photon.PunBehaviour {
 			stealSizeForOther.Normalize ();
 			stealSizeForOther.Scale (new Vector3 (percentToDecrease,percentToDecrease, percentToDecrease));
 
-			//take the size away from the other player
-			other.collider.GetComponent<PlayerController>().changeSize(stealSizeForOther);
-
+            //take the size away from the other player
+            //other.collider.GetComponent<PlayerController> ().changeSize(stealSizeForOther);
+            try
+            {
+                other.collider.GetComponent<testPushBack>().changeSize(stealSizeForOther);
+            } 
+            catch(Exception e)
+            {
+                Debug.LogWarning(e.Message);
+            }
 			float differnceInSizeBeforeSteal = originalOtherSize.magnitude - stealSizeForOther.magnitude;
 			float growByThis = playerSize + differnceInSizeBeforeSteal;
 
 			//grow self
 			stealSize.Scale (new Vector3 (growByThis,growByThis, growByThis));
 			changeSize (stealSize);
-        }
+		}
 	}
 	public void changeSize(Vector3 newSizeTarget){
 		sizeTarget = newSizeTarget;

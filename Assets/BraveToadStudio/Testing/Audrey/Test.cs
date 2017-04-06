@@ -14,8 +14,7 @@ public class Test : MonoBehaviour {
 
           if (Input.GetKeyUp(KeyCode.Space))
           {
-               Debug.Log("Hi");
-               Handheld.Vibrate();
+
            }
      }
 }
