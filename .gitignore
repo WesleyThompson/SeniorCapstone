@@ -13,7 +13,9 @@ Assets/PhotonChatApi.meta
 Assets/Plugins.meta
 sysinfo.txt
 *.stackdump
- 
+*.sln
+*.csproj
+
  # ============================================= #
  # Visual Studio / MonoDevelop / Rider generated #
  # ============================================= #

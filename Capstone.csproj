@@ -93,6 +93,9 @@
     <Compile Include="Assets\BraveToadStudio\Testing\Audrey\PlayerSizeScript.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Audrey\Test.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Audrey\TimerScript.cs" />
+    <Compile Include="Assets\BraveToadStudio\Testing\Chadwick\MainMenuGlobal.cs" />
+    <Compile Include="Assets\BraveToadStudio\Testing\Chadwick\OverheadDisplay\OverheadDisplayManager.cs" />
+    <Compile Include="Assets\BraveToadStudio\Testing\Chadwick\leaveSplatOnCollide\splatController.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Luke\Scripts\CameraFade.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Luke\Scripts\testPushBack.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\CameraController.cs" />
@@ -106,6 +109,8 @@
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\PlayerController.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\RollableItem.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\RoomManager.cs" />
+    <Compile Include="Assets\Colorful_World\Scripts\BobbingObject.cs" />
+    <Compile Include="Assets\Colorful_World\Scripts\BobbingObjectEditor.cs" />
     <Compile Include="Assets\EZ Camera Shake\Demo\Sample Scripts\ShakeByDistance.cs" />
     <Compile Include="Assets\EZ Camera Shake\Demo\Sample Scripts\ShakeOnKeyPress.cs" />
     <Compile Include="Assets\EZ Camera Shake\Demo\Sample Scripts\ShakeOnTrigger.cs" />
@@ -116,8 +121,7 @@
     <Compile Include="Assets\EZ Camera Shake\Scripts\Utilities\CameraUtilities.cs" />
     <Compile Include="Assets\HazardThing.cs" />
     <Compile Include="Assets\LeaveMatch.cs" />
-    <Compile Include="Assets\MainMenuGlobal.cs" />
-    <Compile Include="Assets\OverheadDisplayManager.cs" />
+    <Compile Include="Assets\Low Poly Ultimate Pack\Standard Assets\Environment\Water\Water\Scripts\Water.cs" />
     <Compile Include="Assets\Photon Unity Networking\Demos\Demo2DJumpAndRunWithPhysics\Scripts\Demo2DJumpAndRun.cs" />
     <Compile Include="Assets\Photon Unity Networking\Demos\Demo2DJumpAndRunWithPhysics\Scripts\JumpAndRunMovement.cs" />
     <Compile Include="Assets\Photon Unity Networking\Demos\DemoBoxes\ColorPerPlayer.cs" />
@@ -178,14 +182,6 @@
     <Compile Include="Assets\Photon Unity Networking\Demos\MarcoPolo-Tutorial\Monstergame\Resources\Scripts\myThirdPersonController.cs" />
     <Compile Include="Assets\Photon Unity Networking\Demos\MarcoPolo-Tutorial\NetworkCharacter.cs" />
     <Compile Include="Assets\Photon Unity Networking\Demos\MarcoPolo-Tutorial\RandomMatchmaker.cs" />
-    <Compile Include="Assets\Photon Unity Networking\Demos\PunBasics-Tutorial\Scripts\CameraWork.cs" />
-    <Compile Include="Assets\Photon Unity Networking\Demos\PunBasics-Tutorial\Scripts\GameManager.cs" />
-    <Compile Include="Assets\Photon Unity Networking\Demos\PunBasics-Tutorial\Scripts\Launcher.cs" />
-    <Compile Include="Assets\Photon Unity Networking\Demos\PunBasics-Tutorial\Scripts\LoaderAnime.cs" />
-    <Compile Include="Assets\Photon Unity Networking\Demos\PunBasics-Tutorial\Scripts\PlayerAnimatorManager.cs" />
-    <Compile Include="Assets\Photon Unity Networking\Demos\PunBasics-Tutorial\Scripts\PlayerManager.cs" />
-    <Compile Include="Assets\Photon Unity Networking\Demos\PunBasics-Tutorial\Scripts\PlayerNameInputField.cs" />
-    <Compile Include="Assets\Photon Unity Networking\Demos\PunBasics-Tutorial\Scripts\PlayerUI.cs" />
     <Compile Include="Assets\Photon Unity Networking\Demos\Shared Assets\Scripts\IdleRunJump.cs" />
     <Compile Include="Assets\Photon Unity Networking\Demos\Shared Assets\Scripts\PlayerDiamond.cs" />
     <Compile Include="Assets\Photon Unity Networking\Demos\Shared Assets\Scripts\PlayerVariables.cs" />
@@ -273,7 +269,9 @@
     <Compile Include="Assets\XInputDotNet\XInputDotNetPure\Utils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Allsky\allsky_readme.txt" />
     <None Include="Assets\Art Assets\Exported Assets\Character test shader v5.shader" />
+    <None Include="Assets\Low Poly Ultimate Pack\Standard Assets\Environment\Water\Water\Shaders\FXWaterPro.shader" />
     <None Include="Assets\Photon Unity Networking\Demos\DemoBoxes\Resources\eurof_tt.txt" />
     <None Include="Assets\Photon Unity Networking\Demos\DemoPickup\Assets\3dFont\3dText.shader" />
     <None Include="Assets\Photon Unity Networking\Demos\DemoRockPaperScissors\Assets\OpenSans\Apache License.txt" />
