@@ -46,9 +46,9 @@ public class MainMenuGlobal : MonoBehaviour
 
 		this.currentMenuItems = this.getAllMenuItems() ;
 
-//Detecting errors. for now, only max ccu
+//Detecting and displaying errors. for now, only max ccu
 		if (PlayerPrefs.GetInt ("maxccu") == 1)
-		{
+		{//when main menu init, read playerpref and if it is set to 1 and exists, set the error popup button active and reset the maxccu error local machine variable to 0
 			errorPopup.gameObject.SetActive (true);
 			PlayerPrefs.SetInt ("maxccu",0);
 		}
