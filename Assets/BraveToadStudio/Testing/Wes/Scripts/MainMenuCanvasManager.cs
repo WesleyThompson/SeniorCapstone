@@ -16,10 +16,10 @@ public class MainMenuCanvasManager : MonoBehaviour {
 	
 	void Update () {
         penaltyTime = PlayerPrefs.GetFloat("penaltyTimer");
-        Debug.Log(penaltyTime);
 
         if (penaltyTime > 0)
         {
+            //TODO add visual UI element for penalty time
             penaltyTime -= Time.deltaTime;
             PlayerPrefs.SetFloat("penaltyTimer", penaltyTime);
 
@@ -41,11 +41,11 @@ public class MainMenuCanvasManager : MonoBehaviour {
 
     private void deactivatePlayButton()
     {
-        mmg.playButton.enabled = false;
+        //mmg.playButton.enabled = false;
     }
 
     private void activatePlayButton()
     {
-        mmg.playButton.enabled = true;
+        //mmg.playButton.enabled = true;
     }
 }

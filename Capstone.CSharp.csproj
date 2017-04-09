@@ -73,14 +73,11 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
-    <Reference Include="Photon3Unity3D">
-      <HintPath>Assets\Plugins\Photon3Unity3D.dll</HintPath>
-    </Reference>
     <Reference Include="websocket-sharp">
       <HintPath>Assets\Plugins\WebSocket\websocket-sharp.dll</HintPath>
     </Reference>
-    <Reference Include="XInputDotNetPure">
-      <HintPath>Assets\Plugins\x86_64\XInputDotNetPure.dll</HintPath>
+    <Reference Include="Photon3Unity3D">
+      <HintPath>Assets\Plugins\Photon3Unity3D.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -96,6 +93,9 @@
     <Compile Include="Assets\BraveToadStudio\Testing\Audrey\PlayerSizeScript.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Audrey\Test.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Audrey\TimerScript.cs" />
+    <Compile Include="Assets\BraveToadStudio\Testing\Chadwick\MainMenuGlobal.cs" />
+    <Compile Include="Assets\BraveToadStudio\Testing\Chadwick\OverheadDisplay\OverheadDisplayManager.cs" />
+    <Compile Include="Assets\BraveToadStudio\Testing\Chadwick\leaveSplatOnCollide\splatController.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Luke\Scripts\CameraFade.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Luke\Scripts\testPushBack.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\CameraController.cs" />
@@ -104,6 +104,7 @@
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\GameCanvasManager.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\GameManager.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\LocalPlayerManager.cs" />
+    <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\MainMenuCanvasManager.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\MouseOrbitImproved.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\PlayerController.cs" />
     <Compile Include="Assets\BraveToadStudio\Testing\Wes\Scripts\RollableItem.cs" />
@@ -118,8 +119,6 @@
     <Compile Include="Assets\EZ Camera Shake\Scripts\Utilities\CameraUtilities.cs" />
     <Compile Include="Assets\HazardThing.cs" />
     <Compile Include="Assets\LeaveMatch.cs" />
-    <Compile Include="Assets\MainMenuGlobal.cs" />
-    <Compile Include="Assets\OverheadDisplayManager.cs" />
     <Compile Include="Assets\Photon Unity Networking\Demos\Demo2DJumpAndRunWithPhysics\Scripts\Demo2DJumpAndRun.cs" />
     <Compile Include="Assets\Photon Unity Networking\Demos\Demo2DJumpAndRunWithPhysics\Scripts\JumpAndRunMovement.cs" />
     <Compile Include="Assets\Photon Unity Networking\Demos\DemoBoxes\ColorPerPlayer.cs" />
@@ -270,6 +269,9 @@
     <Compile Include="Assets\PhotonChatApi\IChatClientListener.cs" />
     <Compile Include="Assets\SettingsMenu.cs" />
     <Compile Include="Assets\XInputDotNet\Examples\XInputTestCS.cs" />
+    <Compile Include="Assets\XInputDotNet\XInputDotNetPure\GamePad.cs" />
+    <Compile Include="Assets\XInputDotNet\XInputDotNetPure\Properties\AssemblyInfo.cs" />
+    <Compile Include="Assets\XInputDotNet\XInputDotNetPure\Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Art Assets\Exported Assets\Character test shader v5.shader" />

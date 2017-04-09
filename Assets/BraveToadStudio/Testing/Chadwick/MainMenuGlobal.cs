@@ -21,7 +21,6 @@ public class MainMenuGlobal : MonoBehaviour
 	public List<Button> hiddenMenuItems = new List<Button>() ; //temp holder to hold items wished to be hidden / unhidden
 	public List<Button> currentMenuItems = new List<Button>() ; //always holed latest set of menu items
 	
-	public Button playButton ;
 	public Button settingsButton ;
 	public Button creditsButton ;
 	public Button exitButton ;
@@ -34,7 +33,6 @@ public class MainMenuGlobal : MonoBehaviour
 	
 	void Start ()
 	{//when init scene, add onclick events for all main menu buttons: play, settings, credits, exit
-		playButton.GetComponent<Button>().onClick.AddListener(openPlay) ;
 		settingsButton.GetComponent<Button>().onClick.AddListener(openSettings) ;
 		creditsButton.GetComponent<Button>().onClick.AddListener(openCredits) ;
 		exitButton.GetComponent<Button>().onClick.AddListener(closeGame) ;
@@ -66,7 +64,6 @@ public class MainMenuGlobal : MonoBehaviour
 	{//returns list of all currently unhidden menu items
 		if(this.currentMenuItems.Count == 0)
 		{//if menu has not been added to current menu items list, add them
-			currentMenuItems.Add(playButton) ;
 			currentMenuItems.Add(settingsButton) ;
 			currentMenuItems.Add(creditsButton) ;
 			currentMenuItems.Add(exitButton) ;
