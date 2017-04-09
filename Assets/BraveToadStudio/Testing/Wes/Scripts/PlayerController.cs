@@ -2,6 +2,7 @@ using UnityEngine;
 using Photon;
 using System.Collections;
 using System;
+using UnityEngine.UI;
 
 // Notes:
 // This script must be attached to the rigidbody of the player's ball.
@@ -64,10 +65,15 @@ public class PlayerController : Photon.PunBehaviour {
 	AudioSource audioPickups;
 	AudioSource audioGround;
 
-	void Start () {
+    public Image boostIndicator;
+
+    void Start () {
 		rb = GetComponent<Rigidbody>(); //get rigid body of player this script is attached to
 
-		AudioSource[] audios = GetComponents<AudioSource> ();
+        boostIndicator = GameObject.Find("Boost Indicator").GetComponent<Image>();
+        boostIndicator.fillAmount = 0f;
+
+        AudioSource[] audios = GetComponents<AudioSource> ();
 		audioNonPickups = audios [0];
 		audioPickups = audios [1];
 		audioGround = audios [2];
@@ -176,6 +182,12 @@ public class PlayerController : Photon.PunBehaviour {
 		
 	//need to know immeadiatly if the boost charger was released
 	void Update() {
+        boostIndicator.fillAmount = chargeCounter / boostChargeTime;
+        if(boostIndicator.fillAmount == 1)
+            boostIndicator.color = Color.green;
+        else
+            boostIndicator.color = Color.Lerp(Color.red, Color.yellow, chargeCounter / boostChargeTime);
+
 		//if the player's using an xboxController check if trigger released
 		if (xboxController) {
 			if((Input.GetAxis ("Right Trigger") > -0.2))
