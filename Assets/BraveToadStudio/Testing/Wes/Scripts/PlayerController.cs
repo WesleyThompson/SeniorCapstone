@@ -1,6 +1,8 @@
 using UnityEngine;
 using Photon;
 using System.Collections;
+using System;
+using UnityEngine.UI;
 
 // Notes:
 // This script must be attached to the rigidbody of the player's ball.
@@ -19,6 +21,8 @@ public class PlayerController : Photon.PunBehaviour {
 	public float speed;
 	[Range(0,1)]
 	public float slowRate;
+
+    public float fallingSlowRate = 1;
 	public float stopThreshold;
 
 	public float maxVelocity = 0;
@@ -61,10 +65,15 @@ public class PlayerController : Photon.PunBehaviour {
 	AudioSource audioPickups;
 	AudioSource audioGround;
 
-	void Start () {
+    public Image boostIndicator;
+
+    void Start () {
 		rb = GetComponent<Rigidbody>(); //get rigid body of player this script is attached to
 
-		AudioSource[] audios = GetComponents<AudioSource> ();
+        boostIndicator = GameObject.Find("Boost Indicator").GetComponent<Image>();
+        boostIndicator.fillAmount = 0f;
+
+        AudioSource[] audios = GetComponents<AudioSource> ();
 		audioNonPickups = audios [0];
 		audioPickups = audios [1];
 		audioGround = audios [2];
@@ -76,14 +85,17 @@ public class PlayerController : Photon.PunBehaviour {
 
 		sizeTarget = transform.localScale;
 	}
-		
+
+    public float speedyFall = (float)0.95;
 	void FixedUpdate () {
+
 		if (parentPhotonView.isMine){ //Make sure this is our player before controlling
 			
 			// Using this allows us to get cross-platform input
 			float horizontal = Input.GetAxis("Horizontal");
 			float vertical = Input.GetAxis("Vertical");
 			Vector3 targetDirection = new Vector3(horizontal, 0.0f, vertical);
+
 
 			// Adjust the target direction based on the direction the camera is facing
 			targetDirection = Camera.main.transform.TransformDirection(targetDirection);
@@ -102,8 +114,17 @@ public class PlayerController : Photon.PunBehaviour {
 			//     since they are analog. Need to add "Dead-Zone" aka a range of values that are close
 			//     enough to 0 to call it 0.
 			if (horizontal == 0f && vertical == 0f){
-				rb.velocity *= slowRate;
-				rb.angularVelocity *= slowRate;
+
+                //fix player falling issue players fall faster
+                if(rb.velocity.y < 0){
+                    rb.velocity *= fallingSlowRate;
+                    rb.angularVelocity *= fallingSlowRate;
+                }
+                else{
+                    rb.velocity *= slowRate;
+                    rb.angularVelocity *= slowRate;
+                }
+
 			}
 
 			//Size stuff
@@ -113,6 +134,18 @@ public class PlayerController : Photon.PunBehaviour {
 			}
 		}
 	}
+
+
+
+
+
+
+
+
+
+
+
+
 
 	private void Boost(Vector3 targetDirection){
 		//player is using an xboxController 
@@ -149,6 +182,12 @@ public class PlayerController : Photon.PunBehaviour {
 		
 	//need to know immeadiatly if the boost charger was released
 	void Update() {
+        boostIndicator.fillAmount = chargeCounter / boostChargeTime;
+        if(boostIndicator.fillAmount == 1)
+            boostIndicator.color = Color.green;
+        else
+            boostIndicator.color = Color.Lerp(Color.red, Color.yellow, chargeCounter / boostChargeTime);
+
 		//if the player's using an xboxController check if trigger released
 		if (xboxController) {
 			if((Input.GetAxis ("Right Trigger") > -0.2))
@@ -204,7 +243,7 @@ public class PlayerController : Photon.PunBehaviour {
 		//{//if player is going fast
 			foreach(ContactPoint contact in other.contacts)
 			{//instantiate splat prefab and attach splatController script onto it
-				Debug.Log("hit " + other.gameObject.name) ;
+				//Debug.Log("hit " + other.gameObject.name) ;
 				GameObject splat = PhotonNetwork.Instantiate("splatPrefab", contact.point, Quaternion.FromToRotation(Vector3.up, contact.normal), 0) ;
 				//GameObject splat = Instantiate(splatPrefab, contact.point, Quaternion.FromToRotation(Vector3.up, contact.normal)) ;
 				splat.AddComponent<splatController>() ;
@@ -259,7 +298,7 @@ public class PlayerController : Photon.PunBehaviour {
 
 		float radius = Mathf.Pow( (3f/4f) * (currentVolume / Mathf.PI), 1f/3f);
 		//Debug.Log("New Radius " + radius);
-		float diameter = radius * 2.25f;
+		float diameter = radius * 2f;
 
 		Vector3 newBounds = new Vector3(diameter, diameter, diameter);
 
@@ -291,10 +330,16 @@ public class PlayerController : Photon.PunBehaviour {
 			stealSizeForOther.Normalize ();
 			stealSizeForOther.Scale (new Vector3 (percentToDecrease,percentToDecrease, percentToDecrease));
 
-			//take the size away from the other player
-			//other.collider.GetComponent<PlayerController> ().changeSize(stealSizeForOther);
-			other.collider.GetComponent<testPushBack>().changeSize(stealSizeForOther);
-
+            //take the size away from the other player
+            //other.collider.GetComponent<PlayerController> ().changeSize(stealSizeForOther);
+            try
+            {
+                other.collider.GetComponent<testPushBack>().changeSize(stealSizeForOther);
+            } 
+            catch(Exception e)
+            {
+                Debug.LogWarning(e.Message);
+            }
 			float differnceInSizeBeforeSteal = originalOtherSize.magnitude - stealSizeForOther.magnitude;
 			float growByThis = playerSize + differnceInSizeBeforeSteal;
 

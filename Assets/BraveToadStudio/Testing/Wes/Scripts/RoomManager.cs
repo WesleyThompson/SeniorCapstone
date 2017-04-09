@@ -18,10 +18,12 @@ public class RoomManager : PunBehaviour {
 		
 	}
 
-    public override void OnJoinedRoom() {
+    public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
+    {
         if (PhotonNetwork.isMasterClient)
         {
             if (PhotonNetwork.playerList.Length == PhotonNetwork.room.MaxPlayers) {
+                
                 PhotonNetwork.LoadLevel(mainSceneName);
             }
         }
