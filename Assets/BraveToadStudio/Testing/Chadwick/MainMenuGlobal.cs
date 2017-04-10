@@ -28,6 +28,8 @@ public class MainMenuGlobal : MonoBehaviour
 
 	public Text creditText ;
 	public GameObject settingsPanel ;
+
+	public Button errorPopup ;
 	
 	void Start ()
 	{//when init scene, add onclick events for all main menu buttons: play, settings, credits, exit
@@ -41,6 +43,15 @@ public class MainMenuGlobal : MonoBehaviour
 		settingsPanel.gameObject.SetActive(false) ;
 
 		this.currentMenuItems = this.getAllMenuItems() ;
+
+//Detecting and displaying errors. for now, only max ccu
+		if (PlayerPrefs.GetInt ("maxccu") == 1)
+		{//when main menu init, read playerpref and if it is set to 1 and exists, set the error popup button active and reset the maxccu error local machine variable to 0
+			errorPopup.gameObject.SetActive (true);
+			PlayerPrefs.SetInt ("maxccu",0);
+		}
+		
+			
 	}
 	
 	void Update () {}
