@@ -5,4 +5,4 @@ Cosmic Jam Battle is a free-for-all, multiplayer game. Each player assimilates a
 
 ![Screenshot from lobby](https://lh3.googleusercontent.com/SiXhCOvaHczNznhrDmzh9VI7wPV8Gg12sGzZVvsSa23HFNVyPWveO-FcFh1rvR0AWamgyaQXKiPU)
 
-This game was created using Unity and Photon Unity Networking Plugin.
+This game was created using Unity 5.6.5f1 and Photon Unity Networking Plugin.
